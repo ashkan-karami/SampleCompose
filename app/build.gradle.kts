@@ -52,6 +52,11 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.dagger.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.runtime.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
