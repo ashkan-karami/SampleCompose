@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
+    id("com.google.devtools.ksp")
     alias(libs.plugins.dagger.hilt.plugin)
 }
 
@@ -59,6 +60,16 @@ dependencies {
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.compose)
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.moshi)
+    //retrofit coroutines
+    implementation(libs.retrofit.coroutine.adapter)
+    //moshi
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
+    ksp(libs.moshi.kotlin.codegen)
+    implementation(libs.kotlin.reflect)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
