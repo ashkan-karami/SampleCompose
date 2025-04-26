@@ -71,6 +71,10 @@ dependencies {
     ksp(libs.moshi.kotlin.codegen)
     implementation(libs.kotlin.reflect)
 
+    // Data store
+    implementation(libs.datastore)
+    implementation(libs.datastore.preferences)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
