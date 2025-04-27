@@ -5,7 +5,6 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import com.ashkan.samplecompose.domain.model.SplashTokenError
 import com.ashkan.samplecompose.ui.screen.splash.SplashScreen
 import com.ashkan.samplecompose.ui.screen.splash.SplashState
 import org.junit.Rule

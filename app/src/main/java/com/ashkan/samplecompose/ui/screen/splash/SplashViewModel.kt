@@ -1,13 +1,14 @@
 package com.ashkan.samplecompose.ui.screen.splash
 
 import androidx.lifecycle.ViewModel
+import com.ashkan.samplecompose.domain.repository.SplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel @Inject constructor(): ViewModel() {
+class SplashViewModel @Inject constructor(repository: SplashRepository): ViewModel() {
 
     private val state = MutableStateFlow(SplashState())
     val stateValue = state.asStateFlow()

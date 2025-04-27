@@ -1,4 +1,4 @@
-package com.ashkan.samplecompose.di
+package com.ashkan.samplecompose.data.di
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
