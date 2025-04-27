@@ -3,26 +3,20 @@ package com.ashkan.samplecompose.data.core
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-inline fun <reified Output> apiWrapper(noinline request: suspend () -> Output): Flow<Result<Output>> {
+inline fun <Left, reified Right> apiWrapper(noinline mapper: (Left) -> Right,
+                                            noinline request: suspend () -> NetworkResponse<Left>): Flow<Result<Right>> {
 
     return flow {
-        runCatching {
+        kotlin.runCatching {
             val response = request.invoke()
-            if (response != null) {
-                emit(Result.success(response))
+            if (response.status) {
+                emit(response.data.wrapResponse(mapper))
             } else {
-                emit(
-                    Result.failure(
-                        NetworkExceptions.ServerStatusFalse(
-                            /*Must be replaced with message from server*/"Failed to connect to the server",
-                            null
-                        )
-                    )
-                )
+                emit(Result.failure(NetworkExceptions.ServerStatusFalse(response.message, null)))
             }
         }.onFailure { throwable ->
             emit(
-                throwable.toNetworkExceptions()
+                throwable.toNetworkExceptions<Right>()
             )
         }
     }
