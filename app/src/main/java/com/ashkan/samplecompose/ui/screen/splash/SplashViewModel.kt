@@ -1,6 +1,5 @@
 package com.ashkan.samplecompose.ui.screen.splash
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ashkan.samplecompose.data.core.ApiState
@@ -45,9 +44,7 @@ class SplashViewModel @Inject constructor(
     private fun getAppConfig(){
         viewModelScope.launch{
             repository.getAppConfig().collect{
-                val apiState =  it.toApiState()
-                Log.i("aaaaaaaaaaaaaaaa","view model response="+apiState)
-                when(apiState){
+                when(val apiState =  it.toApiState()){
                     is ApiState.Success -> {
                         _state.emit(_state.value.copy(isLoading = false, navigateToHome = true))
                         // TODO cache temporary data
