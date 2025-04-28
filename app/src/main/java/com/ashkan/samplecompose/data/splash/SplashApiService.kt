@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface SplashApiService {
 
-    @GET("/V2/Main/AppConfig")
+    @GET("users/1")
     suspend fun getAppConfig(): NetworkResponse<AppConfigResponseDto>
 }

@@ -1,5 +1,6 @@
 package com.ashkan.samplecompose.data.splash
 
+import android.util.Log
 import com.ashkan.samplecompose.data.core.apiWrapper
 import com.ashkan.samplecompose.data.splash.model.AppConfigResponseDto
 import com.ashkan.samplecompose.data.splash.model.mapper
@@ -15,6 +16,8 @@ class SplashRepositoryImpl(
         apiWrapper(
             mapper = AppConfigResponseDto::mapper
         ) {
-            apiService.getAppConfig()
+            val res = apiService.getAppConfig()
+            Log.i("aaaaaaaaaaaaa","repository=>"+res)
+            res
         }
 }

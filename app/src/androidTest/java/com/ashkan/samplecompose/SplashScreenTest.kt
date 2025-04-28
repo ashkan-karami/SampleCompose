@@ -5,6 +5,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import com.ashkan.samplecompose.data.core.defaultErrorMessage
 import com.ashkan.samplecompose.ui.screen.splash.SplashScreen
 import com.ashkan.samplecompose.ui.screen.splash.SplashState
 import org.junit.Rule
@@ -15,11 +16,14 @@ class SplashScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
+    private val testVersionName = "1.1.0-test"
+
     @Test
     fun splashScreen_whenLoading_showIcon() {
         composeTestRule.setContent {
             SplashScreen(
-                uiState = SplashState(isLoading = true)
+                uiState = SplashState(isLoading = true),
+                versionName = testVersionName
             )
         }
         composeTestRule
@@ -45,7 +49,8 @@ class SplashScreenTest {
     fun splashScreen_whenLoading_showLoading() {
         composeTestRule.setContent {
             SplashScreen(
-                uiState = SplashState(isLoading = true)
+                uiState = SplashState(isLoading = true),
+                versionName = testVersionName
             )
         }
         composeTestRule
@@ -58,9 +63,8 @@ class SplashScreenTest {
         val message = "Sorry! failed"
         composeTestRule.setContent {
             SplashScreen(
-                uiState = SplashState(isLoading = false, tokenError = SplashTokenError(
-                    errorCode = 0, errorMessage = message
-                ))
+                uiState = SplashState(isLoading = false, appConfigFailureMessage = message),
+                versionName = testVersionName
             )
         }
         composeTestRule

@@ -16,8 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ashkan.samplecompose.R
 import com.ashkan.samplecompose.ui.theme.SampleComposeTheme
+import com.ashkan.samplecompose.util.getAppVersionName
 
 /**
  *   collectAsStateWithLifecycle checks the lifecycle and stops emitting & collecting when OnPause.
@@ -43,6 +46,8 @@ internal fun SplashRoute(
     viewModel: SplashViewModel = hiltViewModel()
 ) {
     val state: SplashState by viewModel.stateValue.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val versionName = remember { context.getAppVersionName() }
 
     LaunchedEffect(state) {
         if (state.navigateToLogin) {
@@ -58,15 +63,15 @@ internal fun SplashRoute(
     SplashScreen(
         modifier = modifier,
         uiState = state,
-        versionName = "1.1.0" // sample
+        versionName = versionName
     )
 }
 
 @Composable
 internal fun SplashScreen(
     modifier: Modifier = Modifier,
-    versionName: String = "",
     uiState: SplashState,
+    versionName: String,
 ) {
     Column(modifier = modifier) {
         when {
@@ -76,10 +81,10 @@ internal fun SplashScreen(
                     versionName = versionName
                 )
             }
-            uiState.tokenError != null -> {
+            uiState.appConfigFailureMessage != null -> {
                 FailureBody(
                     modifier = modifier,
-                    message = uiState.tokenError.errorMessage
+                    message = uiState.appConfigFailureMessage
                 )
             }
         }
@@ -89,7 +94,7 @@ internal fun SplashScreen(
 @Composable
 private fun SplashBody(
     modifier: Modifier = Modifier,
-    versionName: String = ""
+    versionName: String
 ) {
     Column(
         modifier = modifier
@@ -137,7 +142,6 @@ private fun FailureBody(
             fontSize = 25.sp,
         )
     }
-
 }
 
 
@@ -151,13 +155,13 @@ private fun FailureBody(
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-fun SplashScreenPreview() {
+fun SplashBodyPreview() {
     SampleComposeTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            SplashBody()
+            SplashBody(versionName = "1.1.0")
         }
     }
 }
@@ -179,6 +183,30 @@ fun FailureBodyPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             FailureBody(message = "Preview message!")
+        }
+    }
+}
+
+@Preview(
+    name = "Light",
+    showBackground = true
+)
+@Preview(
+    name = "Night",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun SplashScreenPreview() {
+    SampleComposeTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            SplashScreen(
+                uiState = SplashState(),
+                versionName = "1.1.1"
+            )
         }
     }
 }
