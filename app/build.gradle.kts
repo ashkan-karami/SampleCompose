@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    // Hilt
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
@@ -75,11 +76,25 @@ dependencies {
     implementation(libs.datastore)
     implementation(libs.datastore.preferences)
 
+    // Test & Debug
     testImplementation(libs.junit)
+    testImplementation(libs.dagger.hilt.testing)
+    // Fo mocking and fake instances/values
+    testImplementation(libs.mokito)
+    testImplementation(libs.mokito.kotlin)
+    testImplementation(libs.mokito.inline)
+    // Coroutine test rules
+    testImplementation(libs.coroutine.testing)
+    androidTestImplementation(libs.dagger.hilt.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.compose.ui.testing)
+    // Needed for createAndroidComposeRule, but not createComposeRule:
+    debugImplementation(libs.compose.testing.manifest)
+    kaptAndroidTest(libs.dagger.hilt.compiler)
+    kaptTest(libs.dagger.hilt.compiler)
 }
