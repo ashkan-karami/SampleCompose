@@ -2,6 +2,7 @@ package com.ashkan.samplecompose.ui.screen.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ashkan.samplecompose.data.cache.DataStoreManager
 import com.ashkan.samplecompose.data.core.ApiState
 import com.ashkan.samplecompose.data.core.toApiState
 import com.ashkan.samplecompose.data.repository.splash.SplashRepository

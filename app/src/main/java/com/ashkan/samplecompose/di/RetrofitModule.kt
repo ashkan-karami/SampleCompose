@@ -13,9 +13,9 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RetrofitModule {
+object RetrofitModule {
 
-    private val baseURL = "https://jsonplaceholder.typicode.com/"
+    private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
 
     @Singleton
     @Provides
@@ -31,6 +31,6 @@ class RetrofitModule {
         return Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .baseUrl(baseURL).build()
+            .baseUrl(BASE_URL).build()
     }
 }
