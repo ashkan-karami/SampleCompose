@@ -10,9 +10,9 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RetrofitModule {
+object DataStoreModule {
 
     @Provides
-    fun provideMoshiBuilder(@ApplicationContext context: Context) : DataStoreManager =
+    fun provideDataStoreManager(@ApplicationContext context: Context) : DataStoreManager =
         DataStoreManager(context)
 }

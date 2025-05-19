@@ -1,6 +1,7 @@
 package com.ashkan.samplecompose.splash
 
 import com.ashkan.samplecompose.MainDispatcherRule
+import com.ashkan.samplecompose.data.cache.DataStoreManager
 import com.ashkan.samplecompose.data.model.splash.AppConfigModel
 import com.ashkan.samplecompose.data.repository.splash.SplashRepository
 import com.ashkan.samplecompose.ui.screen.splash.SplashAction
@@ -32,30 +33,32 @@ class SplashViewModelTest {
     private lateinit var viewModel: SplashViewModel
     private val mockedSplashRepository: SplashRepository = mock()
     private val successSplashResponseModel: AppConfigModel = mock()
-
-    @Before
-    fun setup() {
-        whenever(mockedSplashRepository.getAppConfig()).thenReturn( flow {
-            delay(2000)
-            emit(Result.success(successSplashResponseModel))
-        })
-        viewModel = SplashViewModel(mockedSplashRepository)
-    }
+    private val mockedDataStoreManager: DataStoreManager = mock()
 
     @Test
-    fun splashState_whenCallingApi_showsProgress() = runTest {
-        assertTrue(viewModel.stateValue.value.isLoading)
-    }
-
-    @Test
-    fun splashState_whenCallingApi_repositoryInvokesOnce() = runTest{
+    fun splashState_whenTokenSaved_appConfigCalled() = runTest {
+        whenever(mockedSplashRepository.getAppConfig()).thenReturn( flow { emit(Result.success(successSplashResponseModel)) })
+        whenever(mockedDataStoreManager.isTokenSaved()).thenReturn(true)
+        viewModel = SplashViewModel(mockedDataStoreManager, mockedSplashRepository)
         verify(mockedSplashRepository, times(1)).getAppConfig()
     }
 
     @Test
-    fun splashState_whenSuccess_thenResultIsSuccess() = runTest {
+    fun splashState_whenCallingApi_showsProgress() = runTest {
+        whenever(mockedSplashRepository.getAppConfig()).thenReturn( flow {
+            delay(2000)
+            emit(Result.success(successSplashResponseModel))
+        })
+        whenever(mockedDataStoreManager.isTokenSaved()).thenReturn(true)
+        viewModel = SplashViewModel(mockedDataStoreManager, mockedSplashRepository)
+        assertTrue(viewModel.stateValue.value.isLoading)
+    }
+
+    @Test
+    fun splashState_whenApiSuccess_thenResultIsSuccess() = runTest {
         whenever(mockedSplashRepository.getAppConfig()).thenReturn( flow { emit(Result.success(successSplashResponseModel)) })
-        viewModel = SplashViewModel(mockedSplashRepository)
+        whenever(mockedDataStoreManager.isTokenSaved()).thenReturn(true)
+        viewModel = SplashViewModel(mockedDataStoreManager, mockedSplashRepository)
         assertTrue(viewModel.stateValue.first().navigateToHome)
         assertEquals(viewModel.stateValue.first().appConfigFailureMessage, null)
     }

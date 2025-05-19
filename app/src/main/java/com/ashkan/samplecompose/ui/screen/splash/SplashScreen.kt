@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -63,7 +65,10 @@ internal fun SplashRoute(
     SplashScreen(
         modifier = modifier,
         uiState = state,
-        versionName = versionName
+        versionName = versionName,
+        onDialogDismissed = {
+            viewModel.onAction(SplashAction.UpdateDialogDismissed)
+        }
     )
 }
 
@@ -72,6 +77,7 @@ internal fun SplashScreen(
     modifier: Modifier = Modifier,
     uiState: SplashState,
     versionName: String,
+    onDialogDismissed: () -> Unit
 ) {
     Column(modifier = modifier) {
         when {
@@ -80,6 +86,9 @@ internal fun SplashScreen(
                     modifier = modifier,
                     versionName = versionName
                 )
+            }
+            uiState.showUpdateDialog -> {
+                ShowUpdateDialog(uiState.newVersionCode?:"", onDialogDismissed)
             }
             uiState.appConfigFailureMessage != null -> {
                 FailureBody(
@@ -144,6 +153,27 @@ private fun FailureBody(
     }
 }
 
+@Composable
+fun ShowUpdateDialog(
+    version: String,
+    onDialogDismissed: () -> Unit
+){
+    AlertDialog(
+        onDismissRequest = onDialogDismissed,
+        title = { Text("Update..") },
+        text = { Text("Version $version is available, do you want to update?") },
+        confirmButton = {
+            TextButton(onClick = onDialogDismissed) {
+                Text("Update")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDialogDismissed) {
+                Text("Close")
+            }
+        }
+    )
+}
 
 @Preview(
     name = "Light",
@@ -205,7 +235,8 @@ fun SplashScreenPreview() {
         ) {
             SplashScreen(
                 uiState = SplashState(),
-                versionName = "1.1.1"
+                versionName = "1.1.1",
+                onDialogDismissed = {}
             )
         }
     }
