@@ -1,13 +1,12 @@
-package com.ashkan.samplecompose.data.di
+package com.ashkan.samplecompose.di
 
-import com.ashkan.samplecompose.data.splash.SplashApiService
-import com.ashkan.samplecompose.data.splash.SplashRepositoryImpl
-import com.ashkan.samplecompose.domain.repository.SplashRepository
+import com.ashkan.samplecompose.data.api.SplashApiService
+import com.ashkan.samplecompose.data.repository.splash.SplashRepositoryImpl
+import com.ashkan.samplecompose.data.repository.splash.SplashRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

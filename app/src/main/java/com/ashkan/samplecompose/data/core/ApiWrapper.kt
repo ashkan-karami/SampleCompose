@@ -1,16 +1,17 @@
 package com.ashkan.samplecompose.data.core
 
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
-inline fun <Left, reified Right> apiWrapper(noinline mapper: (Left) -> Right,
-                                            noinline request: suspend () -> NetworkResponse<Left>): Flow<Result<Right>> {
+fun <Right> apiWrapper(request: suspend () -> NetworkResponse<Right>): Flow<Result<Right>> {
 
     return flow {
         kotlin.runCatching {
             val response = request.invoke()
             if (response.status) {
-                emit(response.data.wrapResponse(mapper))
+                emit(Result.success(response.data))
             } else {
                 emit(Result.failure(NetworkExceptions.ServerStatusFalse(response.message, null)))
             }
@@ -19,5 +20,5 @@ inline fun <Left, reified Right> apiWrapper(noinline mapper: (Left) -> Right,
                 throwable.toNetworkExceptions<Right>()
             )
         }
-    }
+    }.flowOn(IO)
 }

@@ -1,6 +1,6 @@
-package com.ashkan.samplecompose.data.di
+package com.ashkan.samplecompose.di
 
-import com.ashkan.samplecompose.data.splash.SplashApiService
+import com.ashkan.samplecompose.data.api.SplashApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

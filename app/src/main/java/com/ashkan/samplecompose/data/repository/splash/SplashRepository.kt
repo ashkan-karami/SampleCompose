@@ -1,6 +1,6 @@
-package com.ashkan.samplecompose.domain.repository
+package com.ashkan.samplecompose.data.repository.splash
 
-import com.ashkan.samplecompose.domain.model.splash.AppConfigModel
+import com.ashkan.samplecompose.data.model.splash.AppConfigModel
 import kotlinx.coroutines.flow.Flow
 
 interface SplashRepository {

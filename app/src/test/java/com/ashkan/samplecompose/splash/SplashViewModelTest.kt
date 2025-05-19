@@ -1,8 +1,8 @@
 package com.ashkan.samplecompose.splash
 
 import com.ashkan.samplecompose.MainDispatcherRule
-import com.ashkan.samplecompose.domain.model.splash.AppConfigModel
-import com.ashkan.samplecompose.domain.repository.SplashRepository
+import com.ashkan.samplecompose.data.model.splash.AppConfigModel
+import com.ashkan.samplecompose.data.repository.splash.SplashRepository
 import com.ashkan.samplecompose.ui.screen.splash.SplashViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before

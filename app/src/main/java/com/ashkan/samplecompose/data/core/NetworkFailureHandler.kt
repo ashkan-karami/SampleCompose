@@ -3,11 +3,9 @@ package com.ashkan.samplecompose.data.core
 import kotlinx.coroutines.TimeoutCancellationException
 import retrofit2.HttpException
 import java.io.IOException
-import java.net.UnknownHostException
-import javax.net.ssl.SSLHandshakeException
 
 
-inline fun <reified Output> Throwable.toNetworkExceptions(): Result<Output> {
+fun <Output> Throwable.toNetworkExceptions(): Result<Output> {
     return Result.failure(
         when (this) {
             is IOException -> {
