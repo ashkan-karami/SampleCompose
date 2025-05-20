@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ashkan.samplecompose.R
+import com.ashkan.samplecompose.data.core.defaultErrorMessage
 import com.ashkan.samplecompose.ui.theme.SampleComposeTheme
 import com.ashkan.samplecompose.util.getAppVersionName
 
@@ -88,7 +89,10 @@ internal fun SplashScreen(
                 )
             }
             uiState.showUpdateDialog -> {
-                ShowUpdateDialog(uiState.newVersionCode?:"", onDialogDismissed)
+                ShowUpdateDialog(
+                    uiState.updateDialogTitle,
+                    uiState.updateDialogMessage,
+                    onDialogDismissed)
             }
             uiState.appConfigFailureMessage != null -> {
                 FailureBody(
@@ -154,21 +158,23 @@ private fun FailureBody(
 }
 
 @Composable
-fun ShowUpdateDialog(
-    version: String,
+private fun ShowUpdateDialog(
+    title: String,
+    message: String,
     onDialogDismissed: () -> Unit
 ){
     AlertDialog(
         onDismissRequest = onDialogDismissed,
-        title = { Text("Update..") },
-        text = { Text("Version $version is available, do you want to update?") },
+        title = { Text(title) },
+        text = { Text(message) },
         confirmButton = {
             TextButton(onClick = onDialogDismissed) {
                 Text("Update")
             }
         },
         dismissButton = {
-            TextButton(onClick = onDialogDismissed) {
+            TextButton(onClick = onDialogDismissed,
+                modifier = Modifier.testTag("CloseDialog")) {
                 Text("Close")
             }
         }
@@ -191,7 +197,13 @@ fun SplashBodyPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            SplashBody(versionName = "1.1.0")
+            SplashScreen(
+                uiState = SplashState(
+                    isLoading = true
+                ),
+                versionName = "1.1.1",
+                onDialogDismissed = {}
+            )
         }
     }
 }
@@ -212,7 +224,13 @@ fun FailureBodyPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            FailureBody(message = "Preview message!")
+            SplashScreen(
+                uiState = SplashState(
+                    appConfigFailureMessage = "Preview message!"
+                ),
+                versionName = "1.1.1",
+                onDialogDismissed = {}
+            )
         }
     }
 }
@@ -227,14 +245,18 @@ fun FailureBodyPreview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-fun SplashScreenPreview() {
+fun UpdateDialogPreview() {
     SampleComposeTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
             SplashScreen(
-                uiState = SplashState(),
+                uiState = SplashState(
+                    showUpdateDialog = true,
+                    updateDialogTitle = "Title",
+                    updateDialogMessage = "Message"
+                ),
                 versionName = "1.1.1",
                 onDialogDismissed = {}
             )

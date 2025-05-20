@@ -1,10 +1,14 @@
 package com.ashkan.samplecompose
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import com.ashkan.samplecompose.data.core.defaultErrorMessage
 import com.ashkan.samplecompose.ui.screen.splash.SplashScreen
 import com.ashkan.samplecompose.ui.screen.splash.SplashState
@@ -23,12 +27,13 @@ class SplashScreenTest {
         composeTestRule.setContent {
             SplashScreen(
                 uiState = SplashState(isLoading = true),
-                versionName = testVersionName
+                versionName = testVersionName,
+                onDialogDismissed = {}
             )
         }
         composeTestRule
             .onNodeWithContentDescription("SplashIcon")
-            .assertExists()
+            .assertIsDisplayed()
     }
 
     @Test
@@ -37,7 +42,8 @@ class SplashScreenTest {
         composeTestRule.setContent {
             SplashScreen(
                 uiState = SplashState(isLoading = true),
-                versionName = version
+                versionName = version,
+                onDialogDismissed = {}
             )
         }
         composeTestRule
@@ -50,7 +56,8 @@ class SplashScreenTest {
         composeTestRule.setContent {
             SplashScreen(
                 uiState = SplashState(isLoading = true),
-                versionName = testVersionName
+                versionName = testVersionName,
+                onDialogDismissed = {}
             )
         }
         composeTestRule
@@ -64,11 +71,35 @@ class SplashScreenTest {
         composeTestRule.setContent {
             SplashScreen(
                 uiState = SplashState(isLoading = false, appConfigFailureMessage = message),
-                versionName = testVersionName
+                versionName = testVersionName,
+                onDialogDismissed = {}
             )
         }
         composeTestRule
             .onNodeWithText(message)
             .assertExists()
+    }
+
+    @OptIn(ExperimentalTestApi::class)
+    @Test
+    fun alertDialog_whenNewUpdate_isDisplayed() {
+        val title = "UpdateTitle"
+        val message = "Version 1.2.3 is available"
+        composeTestRule.setContent {
+            SplashScreen(
+                uiState = SplashState(
+                    isLoading = false,
+                    showUpdateDialog = true,
+                    newVersionCode = "1.2.3",
+                    updateDialogTitle = title,
+                    updateDialogMessage = message
+                    ),
+                versionName = testVersionName,
+                onDialogDismissed = {}
+            )
+        }
+
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+        composeTestRule.onNodeWithText(message).assertIsDisplayed()
     }
 }
