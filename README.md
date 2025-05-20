@@ -1,4 +1,5 @@
 # SampleCompose
+# MVI-Hilt-Coroutine-Test
 A small sample application applying strategy for:
 1. Implementing clean code using MVI, Hilt and Navigation.
 2. Applying both unit & ui test.
