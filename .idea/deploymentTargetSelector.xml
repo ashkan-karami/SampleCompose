@@ -13,16 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="alertDialog_whenNewUpdate_isDisplayed()">
+      <SelectionState runConfigName="loginScreen__showLoading()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="splashScreen_whenLoading_showIcon()">
+      <SelectionState runConfigName="loginScreen_afterButtonCLicked_showLoading()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="splashScreen_whenFailure_showMessage()">
+      <SelectionState runConfigName="loginScreen_showLoading()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SplashScreenTest">
+      <SelectionState runConfigName="loginScreen_passwordTextField_showIcon()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="loginScreen_passwordTextField_showClearIcon()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

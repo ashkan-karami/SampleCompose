@@ -20,6 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Lock
+import androidx.compose.material.icons.rounded.Visibility
+import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,7 +33,9 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -41,6 +45,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -48,6 +53,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -64,6 +71,7 @@ internal fun LoginRoute(
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val state: LoginState by viewModel.stateValue.collectAsStateWithLifecycle()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
 //    LaunchedEffect(state) {
 //        if (state.navigateToHome) {
@@ -78,7 +86,17 @@ internal fun LoginRoute(
     LoginScreen(
         modifier = modifier,
         uiState = state,
-        onAction = viewModel::onAction
+        onAction = {
+            when(it){
+                LoginAction.SubmitLogin -> {
+                    keyboardController?.hide()
+                    viewModel.onAction(it)
+                }
+                else -> {
+                    viewModel.onAction(it)
+                }
+            }
+        }
     )
 }
 
@@ -247,6 +265,8 @@ private fun PasswordTextField(
     uiState: LoginState,
     onAction: (LoginAction) -> Unit
 ) {
+    var passwordVisible by remember { mutableStateOf(false) }
+
     TextField(
         leadingIcon = {
             Icon(
@@ -266,19 +286,33 @@ private fun PasswordTextField(
                 fontFamily = SairaFontFamily
             )
         },
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             if (uiState.password.isNotEmpty()) {
-                IconButton(
-                    modifier = modifier.testTag(PASS_TEXT_FIELD_CLEAR_TAG),
-                    onClick = {
-                        onAction(LoginAction.PasswordChanged(""))
-                    },
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Close,
-                        contentDescription = PASS_TEXT_FIELD_CLEAR_TAG,
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
+                val icon = if (passwordVisible) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff
+
+                Row {
+                    IconButton(
+                        onClick = { passwordVisible = !passwordVisible },
+                    ) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                    IconButton(
+                        modifier = modifier.testTag(PASS_TEXT_FIELD_CLEAR_TAG),
+                        onClick = {
+                            onAction(LoginAction.PasswordChanged(""))
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Close,
+                            contentDescription = PASS_TEXT_FIELD_CLEAR_TAG,
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
                 }
             }
         },
