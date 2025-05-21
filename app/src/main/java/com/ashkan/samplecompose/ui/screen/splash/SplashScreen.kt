@@ -67,9 +67,7 @@ internal fun SplashRoute(
         modifier = modifier,
         uiState = state,
         versionName = versionName,
-        onDialogDismissed = {
-            viewModel.onAction(SplashAction.UpdateDialogDismissed)
-        }
+        onAction = viewModel::onAction
     )
 }
 
@@ -78,7 +76,7 @@ internal fun SplashScreen(
     modifier: Modifier = Modifier,
     uiState: SplashState,
     versionName: String,
-    onDialogDismissed: () -> Unit
+    onAction: (SplashAction) -> Unit
 ) {
     Column(modifier = modifier) {
         when {
@@ -92,7 +90,7 @@ internal fun SplashScreen(
                 ShowUpdateDialog(
                     uiState.updateDialogTitle,
                     uiState.updateDialogMessage,
-                    onDialogDismissed)
+                    onAction)
             }
             uiState.appConfigFailureMessage != null -> {
                 FailureBody(
@@ -161,19 +159,19 @@ private fun FailureBody(
 private fun ShowUpdateDialog(
     title: String,
     message: String,
-    onDialogDismissed: () -> Unit
+    onAction: (SplashAction) -> Unit
 ){
     AlertDialog(
-        onDismissRequest = onDialogDismissed,
+        onDismissRequest = { onAction(SplashAction.UpdateDialogDismissed) },
         title = { Text(title) },
         text = { Text(message) },
         confirmButton = {
-            TextButton(onClick = onDialogDismissed) {
+            TextButton(onClick = { onAction(SplashAction.UpdateDialogDismissed) }) {
                 Text("Update")
             }
         },
         dismissButton = {
-            TextButton(onClick = onDialogDismissed,
+            TextButton(onClick = { onAction(SplashAction.UpdateDialogDismissed) },
                 modifier = Modifier.testTag("CloseDialog")) {
                 Text("Close")
             }
@@ -202,7 +200,7 @@ fun SplashBodyPreview() {
                     isLoading = true
                 ),
                 versionName = "1.1.1",
-                onDialogDismissed = {}
+                onAction = {}
             )
         }
     }
@@ -229,7 +227,7 @@ fun FailureBodyPreview() {
                     appConfigFailureMessage = "Preview message!"
                 ),
                 versionName = "1.1.1",
-                onDialogDismissed = {}
+                onAction = {}
             )
         }
     }
@@ -258,7 +256,7 @@ fun UpdateDialogPreview() {
                     updateDialogMessage = "Message"
                 ),
                 versionName = "1.1.1",
-                onDialogDismissed = {}
+                onAction = {}
             )
         }
     }

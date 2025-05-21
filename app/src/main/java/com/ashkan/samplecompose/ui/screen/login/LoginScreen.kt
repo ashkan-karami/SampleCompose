@@ -15,10 +15,14 @@ internal fun LoginRoute(
 ){
     val state: LoginState by viewModel.stateValue.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state) {
-        if (state.navigateToHome) {
-            onNavigateToHome()
-        }
+//    LaunchedEffect(state) {
+//        if (state.navigateToHome) {
+//            onNavigateToHome()
+//        }
+//    }
+
+    if (state.navigateToHome) {
+        onNavigateToHome()
     }
 
     LoginScreen(
