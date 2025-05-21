@@ -28,7 +28,7 @@ class SplashScreenTest {
             SplashScreen(
                 uiState = SplashState(isLoading = true),
                 versionName = testVersionName,
-                onDialogDismissed = {}
+                onAction = {}
             )
         }
         composeTestRule
@@ -43,7 +43,7 @@ class SplashScreenTest {
             SplashScreen(
                 uiState = SplashState(isLoading = true),
                 versionName = version,
-                onDialogDismissed = {}
+                onAction = {}
             )
         }
         composeTestRule
@@ -57,7 +57,7 @@ class SplashScreenTest {
             SplashScreen(
                 uiState = SplashState(isLoading = true),
                 versionName = testVersionName,
-                onDialogDismissed = {}
+                onAction = {}
             )
         }
         composeTestRule
@@ -72,7 +72,7 @@ class SplashScreenTest {
             SplashScreen(
                 uiState = SplashState(isLoading = false, appConfigFailureMessage = message),
                 versionName = testVersionName,
-                onDialogDismissed = {}
+                onAction = {}
             )
         }
         composeTestRule
@@ -95,7 +95,7 @@ class SplashScreenTest {
                     updateDialogMessage = message
                     ),
                 versionName = testVersionName,
-                onDialogDismissed = {}
+                onAction = {}
             )
         }
 

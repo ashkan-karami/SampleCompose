@@ -37,7 +37,7 @@ class LoginViewModel @Inject constructor(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), LoginState())
 
-    fun onIntent(intent: LoginAction) {
+    fun onAction(intent: LoginAction) {
         when (intent) {
             is LoginAction.EmailChanged -> {
                 savedStateHandle[KEY_EMAIL] = intent.email
@@ -48,6 +48,7 @@ class LoginViewModel @Inject constructor(
             LoginAction.SubmitLogin -> {
                 performLogin()
             }
+            LoginAction.MoveFocusToPassword -> {}
         }
     }
 
