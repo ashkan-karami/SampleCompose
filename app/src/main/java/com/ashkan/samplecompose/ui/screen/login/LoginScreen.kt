@@ -113,6 +113,9 @@ internal fun LoginScreen(
     ) {
         LoginHeader(modifier = modifier)
         Spacer(modifier = modifier.height(32.dp))
+        if (uiState.loginFailure.isNullOrBlank().not()) {
+            LoginFailureMessage(message = uiState.loginFailure)
+        }
         EmailTextField(
             modifier = modifier,
             uiState = uiState,
@@ -164,6 +167,26 @@ private fun LoginHeader(
             style = MaterialTheme.typography.bodyMedium,
             fontFamily = SairaFontFamily,
             color = MaterialTheme.colorScheme.onBackground
+        )
+    }
+}
+
+@Composable
+private fun LoginFailureMessage(
+    modifier: Modifier = Modifier,
+    message: String
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+    ) {
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyLarge,
+            fontFamily = SairaFontFamily,
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.testTag(LOGIN_HEADER_TITLE)
         )
     }
 }

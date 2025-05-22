@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.ashkan.samplecompose.ui.screen.login.EMAIL_TEXT_FIELD_CLEAR_TAG
 import com.ashkan.samplecompose.ui.screen.login.EMAIL_TEXT_FIELD_ICON_TAG
 import com.ashkan.samplecompose.ui.screen.login.EMAIL_TEXT_FIELD_TAG
@@ -23,7 +24,9 @@ import com.ashkan.samplecompose.ui.screen.login.PASS_TEXT_FIELD_CLEAR_TAG
 import com.ashkan.samplecompose.ui.screen.login.PASS_TEXT_FIELD_ICON_TAG
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class LoginScreenTest {
 
     @get:Rule
@@ -170,6 +173,22 @@ class LoginScreenTest {
 
         composeTestRule
             .onNodeWithTag(LOGIN_BUTTON_PROGRESS_TAG)
+            .assertIsDisplayed()
+    }
+
+    // Check the failure message
+    @Test
+    fun loginScreen_whenLoginFailed_showMessage(){
+        val fakeMessage = "Fake message from server"
+        composeTestRule.setContent {
+            LoginScreen(
+                uiState = defaultLoginState.copy(loginFailure = fakeMessage),
+                onAction = {}
+            )
+        }
+
+        composeTestRule
+            .onNodeWithText(fakeMessage)
             .assertIsDisplayed()
     }
 }

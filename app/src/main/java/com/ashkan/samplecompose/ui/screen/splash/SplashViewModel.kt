@@ -46,32 +46,32 @@ class SplashViewModel @Inject constructor(
     }
 
     private suspend fun getAppConfig() {
-            repository.getAppConfig().collect {
-                when (val apiState = it.toApiState()) {
-                    is ApiState.Success -> {
-                        if (apiState.data.updateAvailable == true) {
-                            _state.emit(
-                                _state.value.copy(
-                                    isLoading = false,
-                                    showUpdateDialog = true,
-                                    newVersionCode = apiState.data.newVersionCode
-                                )
-                            )
-                        } else {
-                            _state.emit(_state.value.copy(isLoading = false, navigateToHome = true))
-                        }
-                    }
-
-                    is ApiState.Failure -> {
+        repository.getAppConfig().collect {
+            when (val apiState = it.toApiState()) {
+                is ApiState.Success -> {
+                    if (apiState.data.updateAvailable == true) {
                         _state.emit(
                             _state.value.copy(
                                 isLoading = false,
-                                appConfigFailureMessage = apiState.message
+                                showUpdateDialog = true,
+                                newVersionCode = apiState.data.newVersionCode
                             )
                         )
+                    } else {
+                        _state.emit(_state.value.copy(isLoading = false, navigateToHome = true))
                     }
                 }
+
+                is ApiState.Failure -> {
+                    _state.emit(
+                        _state.value.copy(
+                            isLoading = false,
+                            appConfigFailureMessage = apiState.message
+                        )
+                    )
+                }
             }
+        }
     }
 
     fun onResetState() {

@@ -21,7 +21,7 @@ class DataStoreManager(val context: Context) {
          **/
         val TOKEN = stringPreferencesKey("TOKEN")
         val REFRESH_TOKEN = stringPreferencesKey("REFRESH_TOKEN")
-        val MOBILE_NUMBER = stringPreferencesKey("MOBILE_NUMBER")
+        val EMAIL_ADDRESS = stringPreferencesKey("EMAIL_ADDRESS")
     }
 
     suspend fun isTokenSaved(): Boolean {
@@ -41,11 +41,17 @@ class DataStoreManager(val context: Context) {
         }
     }
 
+    suspend fun saveEmailAddress(email: String) {
+        context.preferenceDataStore.edit {
+            it[EMAIL_ADDRESS] = email
+        }
+    }
+
     suspend fun getToken() = context.preferenceDataStore.data.map { it[TOKEN] }.first()
 
     suspend fun getRefreshToken() = context.preferenceDataStore.data.map { it[REFRESH_TOKEN] ?: "" }.first()
 
-    suspend fun getMobileNumber() = context.preferenceDataStore.data.map { it[MOBILE_NUMBER] ?: "" }
+    suspend fun getEmailAddress() = context.preferenceDataStore.data.map { it[EMAIL_ADDRESS] ?: "" }
 
     suspend fun clearDataStore() = context.preferenceDataStore.edit { it.clear() }
 }
