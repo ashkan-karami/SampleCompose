@@ -34,7 +34,7 @@ class LoginViewModel @Inject constructor(
     ) { emailAddress, password, isLoading, loginFailure, navigateToHome ->
         LoginState(
             emailAddress = emailAddress,
-            isEmailValid = emailAddress.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches(),
+            isEmailValid = emailAddress.isNotEmpty() && isValidEmail(emailAddress),
             password = password,
             isPasswordValid = password.length > 4,
             isLoading = isLoading,
@@ -99,6 +99,11 @@ class LoginViewModel @Inject constructor(
             dataStoreManager.saveRefreshToken(refreshToken)
             dataStoreManager.saveEmailAddress(email)
         }
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$")
+        return email.matches(emailRegex)
     }
 
     private companion object {
