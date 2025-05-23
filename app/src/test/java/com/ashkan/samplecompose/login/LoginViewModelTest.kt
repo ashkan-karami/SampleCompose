@@ -50,7 +50,7 @@ class LoginViewModelTest {
 
     @Test
     fun `on Api calls progressBar displays`() = runTest {
-        whenever(mockedLoginRepository.login(fakeEmail, fakePass)).thenReturn(flow {
+        whenever(mockedLoginRepository.login(fakeEmail, fakePass)).thenReturn( flow {
             delay(2000)
             emit(Result.success(successLoginResponseModel))
         })
@@ -63,10 +63,9 @@ class LoginViewModelTest {
 
     @Test
     fun `on login success navigates to home`() = runTest {
-        whenever(mockedLoginRepository.login(email = fakeEmail, password = fakePass)).thenReturn(
-            flow {
-                emit(Result.success(successLoginResponseModel))
-            })
+        whenever(mockedLoginRepository.login(email = fakeEmail, password = fakePass)).thenReturn( flow {
+            emit(Result.success(successLoginResponseModel))
+        })
         viewModel = LoginViewModel(savedStateHandle, mockedDataStoreManager, mockedLoginRepository)
         viewModel.onAction(LoginAction.EmailChanged(fakeEmail))
         viewModel.onAction(LoginAction.PasswordChanged(fakePass))
@@ -77,10 +76,9 @@ class LoginViewModelTest {
 
     @Test
     fun `on login failure adds failure message`() = runTest {
-        whenever(mockedLoginRepository.login(email = fakeEmail, password = fakePass)).thenReturn(
-            flow {
-                emit(Result.failure(fakeException))
-            })
+        whenever(mockedLoginRepository.login(email = fakeEmail, password = fakePass)).thenReturn( flow {
+            emit(Result.failure(fakeException))
+        })
         viewModel = LoginViewModel(savedStateHandle, mockedDataStoreManager, mockedLoginRepository)
         viewModel.onAction(LoginAction.EmailChanged(fakeEmail))
         viewModel.onAction(LoginAction.PasswordChanged(fakePass))
