@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 val defaultHorizontalSpace = 16.dp
 val defaultVerticalSpace = 16.dp
 val toolbarVerticalSpace = 12.dp // Vertical padding in Toolbar-Title
-val toolbarHorizontalSpace = 24.dp
+val toolbarHorizontalSpace = 16.dp
 
 @Composable
 fun getStatusBarHeight(): Dp = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
