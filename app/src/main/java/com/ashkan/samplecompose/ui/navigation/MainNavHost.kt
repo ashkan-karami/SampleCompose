@@ -6,7 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
-import com.ashkan.samplecompose.ui.screen.HomeRoute
+import com.ashkan.samplecompose.ui.screen.home.HomeRoute
 import com.ashkan.samplecompose.ui.screen.login.LoginRoute
 import com.ashkan.samplecompose.ui.screen.splash.SplashRoute
 

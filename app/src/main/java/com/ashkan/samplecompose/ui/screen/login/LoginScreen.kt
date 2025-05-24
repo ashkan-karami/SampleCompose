@@ -73,12 +73,6 @@ internal fun LoginRoute(
     val state: LoginState by viewModel.stateValue.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current
 
-//    LaunchedEffect(state) {
-//        if (state.navigateToHome) {
-//            onNavigateToHome()
-//        }
-//    }
-
     if (state.navigateToHome) {
         onNavigateToHome()
     }
@@ -205,7 +199,7 @@ private fun EmailTextField(
                 modifier = modifier,
                 imageVector = Icons.Rounded.Email,
                 contentDescription = EMAIL_TEXT_FIELD_ICON_TAG,
-                tint = MaterialTheme.colorScheme.primary,
+                tint = MaterialTheme.colorScheme.onPrimary,
             )
         },
 
@@ -214,7 +208,7 @@ private fun EmailTextField(
                 modifier = modifier.alpha(0.5F),
                 text = "Email address..",
                 fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontFamily = SairaFontFamily
             )
         },
@@ -229,7 +223,7 @@ private fun EmailTextField(
                     Icon(
                         imageVector = Icons.Rounded.Close,
                         contentDescription = EMAIL_TEXT_FIELD_CLEAR_TAG,
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
             }
@@ -254,8 +248,9 @@ private fun EmailTextField(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
-            focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-            unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+            focusedContainerColor = MaterialTheme.colorScheme.primary,
+            unfocusedContainerColor = MaterialTheme.colorScheme.primary,
+            cursorColor = MaterialTheme.colorScheme.onPrimary
         ),
         shape = RoundedCornerShape(12.dp),
         value = uiState.emailAddress,
@@ -271,7 +266,7 @@ private fun EmailTextField(
         textStyle = TextStyle(
             fontSize = 14.sp,
             fontFamily = SairaFontFamily,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.onPrimary
         ),
         maxLines = 1,
         singleLine = true,
@@ -296,7 +291,7 @@ private fun PasswordTextField(
                 modifier = modifier,
                 imageVector = Icons.Rounded.Lock,
                 contentDescription = PASS_TEXT_FIELD_ICON_TAG,
-                tint = MaterialTheme.colorScheme.primary,
+                tint = MaterialTheme.colorScheme.onPrimary,
             )
         },
 
@@ -305,7 +300,7 @@ private fun PasswordTextField(
                 modifier = modifier.alpha(0.5F),
                 text = "Password..",
                 fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontFamily = SairaFontFamily
             )
         },
@@ -321,7 +316,7 @@ private fun PasswordTextField(
                         Icon(
                             imageVector = icon,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                         )
                     }
                     IconButton(
@@ -333,7 +328,7 @@ private fun PasswordTextField(
                         Icon(
                             imageVector = Icons.Rounded.Close,
                             contentDescription = PASS_TEXT_FIELD_CLEAR_TAG,
-                            tint = MaterialTheme.colorScheme.primary,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                         )
                     }
                 }
@@ -362,8 +357,9 @@ private fun PasswordTextField(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
-            focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-            unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+            focusedContainerColor = MaterialTheme.colorScheme.primary,
+            unfocusedContainerColor = MaterialTheme.colorScheme.primary,
+            cursorColor = MaterialTheme.colorScheme.onPrimary
         ),
         shape = RoundedCornerShape(12.dp),
         value = uiState.password,
@@ -381,7 +377,7 @@ private fun PasswordTextField(
         textStyle = TextStyle(
             fontSize = 14.sp,
             fontFamily = SairaFontFamily,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.onPrimary
         ),
         maxLines = 1,
         singleLine = true,

@@ -1,6 +1,5 @@
 package com.ashkan.samplecompose.ui.screen.login
 
-import android.util.Patterns
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

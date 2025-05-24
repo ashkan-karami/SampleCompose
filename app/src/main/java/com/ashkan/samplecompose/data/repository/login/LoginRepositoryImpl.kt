@@ -12,9 +12,10 @@ class LoginRepositoryImpl @Inject constructor(
 
     override fun login(email: String, password: String): Flow<Result<LoginResponseModel>> =
         apiWrapper {
-            apiService.login(
+            val response = apiService.login(
                 email = email,
                 password = password
             )
+            response.copy(token = "fakeToken", refreshToken = "fakeRefreshToken")
         }
 }
