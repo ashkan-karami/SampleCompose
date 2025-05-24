@@ -18,6 +18,7 @@ import com.ashkan.samplecompose.ui.theme.SairaFontFamily
 import com.ashkan.samplecompose.ui.theme.SampleComposeTheme
 import com.ashkan.samplecompose.util.defaultHorizontalSpace
 import com.ashkan.samplecompose.util.getStatusBarHeight
+import com.ashkan.samplecompose.util.toolbarHorizontalSpace
 import com.ashkan.samplecompose.util.toolbarVerticalSpace
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,7 +35,7 @@ fun EdgeToEdgeToolbar(
             .padding(
                 top = if (withStatusBarSpace) getStatusBarHeight()
                 else 0.dp
-            ).padding(horizontal = defaultHorizontalSpace),
+            ).padding(horizontal = toolbarHorizontalSpace),
         verticalArrangement = Arrangement.Center
     ) {
         Text(
