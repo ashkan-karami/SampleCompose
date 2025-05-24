@@ -2,6 +2,7 @@ package com.ashkan.samplecompose.ui.screen.home
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -114,7 +117,7 @@ private fun PostItems(
         initialFirstVisibleItemIndex = 0
     )
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize().testTag("HomePostLazyColumn"),
         contentPadding = PaddingValues(
             top = 12.dp,
             bottom = getNavigationBarHeight()
@@ -132,20 +135,25 @@ private fun PostItems(
 }
 
 @Composable
-fun PostItem(
+private fun PostItem(
     post: PostModel,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .clickable{
+                // TODO see details
+            }
             .padding(bottom = 6.dp)
             .background(
                 color = MaterialTheme.colorScheme.primary,
             )
             .padding(
-                horizontal = defaultHorizontalSpace,
-                vertical = defaultVerticalSpace
+                start = defaultHorizontalSpace,
+                end = defaultHorizontalSpace,
+                top = 12.dp,
+                bottom = 8.dp
             )
     ) {
         Text(
@@ -154,7 +162,8 @@ fun PostItem(
             fontFamily = SairaFontFamily,
             color = MaterialTheme.colorScheme.onPrimary,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.testTag(post.title?:"")
         )
 
         Text(
@@ -162,16 +171,17 @@ fun PostItem(
             style = MaterialTheme.typography.bodyMedium,
             fontFamily = SairaFontFamily,
             color = MaterialTheme.colorScheme.onPrimary,
-            modifier = modifier
+            modifier = Modifier
                 .alpha(0.6F)
-                .padding(top = 4.dp),
+                .padding(top = 4.dp)
+                .testTag(post.body?:""),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
 
         Row(
             modifier = modifier.fillMaxWidth()
-                .padding(top = 4.dp),
+                .padding(top = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
@@ -179,7 +189,7 @@ fun PostItem(
                 text = "See details",
                 style = MaterialTheme.typography.labelMedium,
                 fontFamily = SairaFontFamily,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = Color(0xFF006600),
                 modifier = modifier
                     .padding(end = 4.dp),
                 maxLines = 1,
@@ -190,7 +200,8 @@ fun PostItem(
                 contentDescription = "postArrowIcon",
                 modifier = modifier
                     .size(14.dp)
-                    .rotate(180f)
+                    .rotate(180f),
+                tint = Color(0xFF006600)
             )
         }
     }
