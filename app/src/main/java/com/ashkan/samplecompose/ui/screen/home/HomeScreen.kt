@@ -52,23 +52,10 @@ fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state: HomeState by viewModel.stateValue.collectAsStateWithLifecycle()
-    val keyboardController = LocalSoftwareKeyboardController.current
 
     HomeScreen(
         state = state,
-        onReloadCLicked = {
-            viewModel.onAction(HomeAction.GetPosts)
-        },
-        onSearchClicked = {
-            viewModel.onAction(HomeAction.UpdateSearchingMode(true))
-            keyboardController?.show()
-        },
-        onSearchPhraseChanged = {
-            viewModel.onAction(HomeAction.OnSearchPhraseChanged(it))
-        },
-        onSearchClosed = {
-            viewModel.onAction(HomeAction.UpdateSearchingMode(false))
-        },
+        onAction = viewModel::onAction,
         modifier = modifier
     )
 }
@@ -76,10 +63,7 @@ fun HomeRoute(
 @Composable
 internal fun HomeScreen(
     state: HomeState,
-    onReloadCLicked: () -> Unit,
-    onSearchClicked: () -> Unit,
-    onSearchPhraseChanged: (String) -> Unit,
-    onSearchClosed: () -> Unit,
+    onAction: (action: HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -90,9 +74,9 @@ internal fun HomeScreen(
             "For You",
             isSearching = state.isSearching,
             searchPhrase = state.searchPhrase,
-            onSearchClicked = onSearchClicked,
-            onSearchPhraseChanged = onSearchPhraseChanged,
-            onSearchClosed = onSearchClosed
+            onSearchClicked = {onAction(HomeAction.UpdateSearchingMode(true))},
+            onSearchPhraseChanged = { onAction(HomeAction.OnSearchPhraseChanged(it)) },
+            onSearchClosed = { onAction(HomeAction.UpdateSearchingMode(false)) }
         )
         Spacer(modifier = modifier.height(1.dp))
         when {
@@ -116,7 +100,7 @@ internal fun HomeScreen(
             state.postApiFailureMessage != null -> {
                 FailureBody(
                     message = state.postApiFailureMessage,
-                    onReloadCLicked = onReloadCLicked
+                    onAction = onAction
                 )
             }
         }
@@ -228,7 +212,7 @@ private fun PostItem(
 @Composable
 private fun FailureBody(
     message: String,
-    onReloadCLicked: () -> Unit,
+    onAction: (action: HomeAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -246,7 +230,7 @@ private fun FailureBody(
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(defaultVerticalSpace))
-        Button(onClick = onReloadCLicked) {
+        Button(onClick = { onAction(HomeAction.GetPosts) }) {
             Text(
                 text = "Reload",
                 style = MaterialTheme.typography.titleLarge,
@@ -274,10 +258,7 @@ fun HomeScreenPreview() {
         ) {
             HomeScreen(
                 state = HomeState(isLoading = true),
-                onReloadCLicked = {},
-                onSearchClicked = {},
-                onSearchPhraseChanged = {},
-                onSearchClosed = {}
+                onAction = {},
             )
         }
     }
@@ -297,10 +278,7 @@ private fun HomeScreenLoadingPreview() {
     SampleComposeTheme {
         HomeScreen(
             state = HomeState(isLoading = true),
-            onReloadCLicked = {},
-            onSearchClicked = {},
-            onSearchPhraseChanged = {},
-            onSearchClosed = {}
+            onAction = {},
         )
     }
 }
@@ -323,10 +301,7 @@ fun HomeScreenFailurePreview() {
         ) {
             HomeScreen(
                 state = HomeState(isLoading = true),
-                onReloadCLicked = {},
-                onSearchClicked = {},
-                onSearchPhraseChanged = {},
-                onSearchClosed = {}
+                onAction = {},
             )
         }
     }

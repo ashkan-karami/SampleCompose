@@ -55,10 +55,7 @@ class HomeScreenTest {
         composeTestRule.setContent {
             HomeScreen(
                 state = HomeState(),
-                onReloadCLicked = {},
-                onSearchClicked = {},
-                onSearchPhraseChanged = {},
-                onSearchClosed = {}
+                onAction = {},
             )
         }
 
@@ -74,12 +71,9 @@ class HomeScreenTest {
 
             HomeScreen(
                 state = state,
-                onReloadCLicked = {},
-                onSearchClicked = {
-                    viewModel.onAction(HomeAction.UpdateSearchingMode(activate = true))
-                },
-                onSearchPhraseChanged = {},
-                onSearchClosed = {}
+                onAction = {
+                    viewModel.onAction(it)
+                }
             )
         }
 
@@ -97,10 +91,7 @@ class HomeScreenTest {
         composeTestRule.setContent {
             HomeScreen(
                 state = HomeState(isLoading = true),
-                onReloadCLicked = {},
-                onSearchClicked = {},
-                onSearchPhraseChanged = {},
-                onSearchClosed = {}
+                onAction = {},
             )
         }
 
@@ -115,10 +106,7 @@ class HomeScreenTest {
             viewModel.onAction(HomeAction.GetPosts)
             HomeScreen(
                 state = state,
-                onReloadCLicked = {},
-                onSearchClicked = {},
-                onSearchPhraseChanged = {},
-                onSearchClosed = {}
+                onAction = {},
             )
         }
 
@@ -143,14 +131,9 @@ class HomeScreenTest {
 
             HomeScreen(
                 state = state,
-                onReloadCLicked = {},
-                onSearchClicked = {
-                    viewModel.onAction(HomeAction.UpdateSearchingMode(activate = true))
-                },
-                onSearchPhraseChanged = {
-                    viewModel.onAction(HomeAction.OnSearchPhraseChanged(it))
-                },
-                onSearchClosed = {}
+                onAction = {
+                    viewModel.onAction(it)
+                }
             )
         }
 
@@ -170,10 +153,7 @@ class HomeScreenTest {
         composeTestRule.setContent {
             HomeScreen(
                 state = HomeState(postApiFailureMessage = fakeApiFailureMessage),
-                onReloadCLicked = {},
-                onSearchClicked = {},
-                onSearchPhraseChanged = {},
-                onSearchClosed = {}
+                onAction = {},
             )
         }
 
