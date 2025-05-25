@@ -41,6 +41,11 @@ android {
     buildFeatures {
         compose = true
     }
+
+    sourceSets {
+        // Adds exported schema location as test app assets.
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -108,3 +113,20 @@ dependencies {
     kaptAndroidTest(libs.dagger.hilt.android.compiler)
     kaptTest(libs.dagger.hilt.compiler)
 }
+
+//class RoomSchemaArgProvider(
+//    @get:InputDirectory
+//    @get:PathSensitive(PathSensitivity.RELATIVE)
+//    val schemaDir: File
+//) : CommandLineArgumentProvider {
+//
+//    override fun asArguments(): Iterable<String> {
+//        // Note: If you're using KAPT and javac, change the line below to
+//        // return listOf("-Aroom.schemaLocation=${schemaDir.path}").
+//        return listOf("room.schemaLocation=${schemaDir.path}")
+//    }
+//}
+//
+//ksp {
+//    arg(RoomSchemaArgProvider(File(projectDir, "schemas")))
+//}
