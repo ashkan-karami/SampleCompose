@@ -152,7 +152,8 @@ fun EdgeToEdgeHomeToolbar(
                             )
                         },
                         modifier = Modifier.weight(1F)
-                            .padding(end = 8.dp),
+                            .padding(end = 8.dp)
+                            .testTag("HomeSearchTextField"),
                         colors = TextFieldDefaults.colors(
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,

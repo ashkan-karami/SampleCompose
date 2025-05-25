@@ -191,7 +191,7 @@ private fun PostItem(
             modifier = Modifier
                 .alpha(0.6F)
                 .padding(top = 4.dp)
-                .testTag(post.body ?: ""),
+                .testTag("PostBody"),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )

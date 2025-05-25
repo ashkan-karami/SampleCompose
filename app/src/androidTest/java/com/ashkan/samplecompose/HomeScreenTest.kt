@@ -3,14 +3,19 @@ package com.ashkan.samplecompose
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextInput
 import com.ashkan.samplecompose.data.model.post.PostModel
 import com.ashkan.samplecompose.data.repository.home.HomeRepository
 import com.ashkan.samplecompose.ui.screen.home.HomeAction
@@ -19,6 +24,7 @@ import com.ashkan.samplecompose.ui.screen.home.HomeState
 import com.ashkan.samplecompose.ui.screen.home.HomeViewModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -76,9 +82,10 @@ class HomeScreenTest {
 
         composeTestRule.onNodeWithContentDescription("HomeToolbarSearch").performClick()
 
-        composeTestRule.onNodeWithTag(
-            "HomeToolbarSearchClose",
-            useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("HomeToolbarSearchClose").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("HomeSearchTextField").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("HomeToolbarSearch").assertIsNotDisplayed()
+        composeTestRule.onNodeWithText("For You").assertIsNotDisplayed()
     }
 
     @Test
@@ -98,11 +105,11 @@ class HomeScreenTest {
 
     @Test
     fun whenApiSuccessPostsDisplay(){
-        val items = List(10) { PostModel(it,it,"Title #$it", "Body #$it") }
-
         composeTestRule.setContent {
+            val state by viewModel.stateValue.collectAsState()
+            viewModel.onAction(HomeAction.GetPosts)
             HomeScreen(
-                state = HomeState(content = items),
+                state = state,
                 onReloadCLicked = {},
                 onSearchClicked = {},
                 onSearchPhraseChanged = {},
@@ -112,8 +119,39 @@ class HomeScreenTest {
 
         composeTestRule.onNodeWithTag("HomePostLazyColumn").assertIsDisplayed()
 
-        composeTestRule.onNodeWithTag(items[5].body?:"", useUnmergedTree = true)
+        composeTestRule.onNodeWithTag(viewModel.stateValue.value.content[2].title?:"", useUnmergedTree = true)
             .performScrollTo().assertIsDisplayed()
+        val count = composeTestRule.onAllNodesWithTag("PostBody", useUnmergedTree = true)
+        count.assertCountEquals(viewModel.stateValue.value.content.size) // All items are tagged with 'PostBody'
+    }
+
+    @Test
+    fun typeInSearchTextField(){
+        val searchPhrase = "Title #2"
+        composeTestRule.setContent {
+            val state by viewModel.stateValue.collectAsState()
+            viewModel.onAction(HomeAction.GetPosts)
+
+            HomeScreen(
+                state = state,
+                onReloadCLicked = {},
+                onSearchClicked = {
+                    viewModel.onAction(HomeAction.UpdateSearchingMode(activate = true))
+                },
+                onSearchPhraseChanged = {
+                    viewModel.onAction(HomeAction.OnSearchPhraseChanged(it))
+                },
+                onSearchClosed = {}
+            )
+        }
+
+        composeTestRule.onNodeWithContentDescription("HomeToolbarSearch").performClick()
+        composeTestRule.onNodeWithTag("HomeSearchTextField").performTextInput(searchPhrase)
+        // Search TextField content changes properly
+        composeTestRule.onNodeWithTag("HomeSearchTextField").assertTextContains(searchPhrase)
+        // Check if search result is displayed in LazyColumn
+        val items = composeTestRule.onAllNodesWithTag(searchPhrase, useUnmergedTree = true)
+        items.assertCountEquals(1) // We have only one item with 'Title #2'
     }
 
     @Test

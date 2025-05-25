@@ -11,7 +11,7 @@ class FakeHomeRepository : HomeRepository {
         flow {
             emit(
                 Result.success(
-                    List(10) { PostModel(it,it,"Title #$it", "Body #$it") }
+                    List(5) { PostModel(it,it,"Title #$it", "Body #$it") }
                 )
             )
         }
