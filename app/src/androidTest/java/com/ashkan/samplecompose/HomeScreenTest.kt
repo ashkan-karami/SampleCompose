@@ -39,7 +39,8 @@ class HomeScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    @Inject lateinit var repository: HomeRepository
+    @Inject
+    lateinit var repository: HomeRepository
     private lateinit var viewModel: HomeViewModel
 
     @Before
@@ -48,8 +49,9 @@ class HomeScreenTest {
         viewModel = HomeViewModel(repository)
     }
 
+    // Check if HomeToolbar and its content is displayed peoperly
     @Test
-    fun toolbarDisplaysProperly(){
+    fun toolbarDisplaysProperly() {
         composeTestRule.setContent {
             HomeScreen(
                 state = HomeState(),
@@ -64,8 +66,9 @@ class HomeScreenTest {
         composeTestRule.onNodeWithContentDescription("HomeToolbarSearch").assertIsDisplayed()
     }
 
+    // After clicking on search button, search mode will be activated and Toolbar's content changes.
     @Test
-    fun searchActivation(){
+    fun searchActivation() {
         composeTestRule.setContent {
             val state by viewModel.stateValue.collectAsState()
 
@@ -88,8 +91,9 @@ class HomeScreenTest {
         composeTestRule.onNodeWithText("For You").assertIsNotDisplayed()
     }
 
+    // When calling api, before getting response, user is seeing a Loading.
     @Test
-    fun whenApiCallLoadingDisplays(){
+    fun whenApiCallLoadingDisplays() {
         composeTestRule.setContent {
             HomeScreen(
                 state = HomeState(isLoading = true),
@@ -103,8 +107,9 @@ class HomeScreenTest {
         composeTestRule.onNodeWithTag("ApiCallProgress").isDisplayed()
     }
 
+    // After getting post list successfully, a list of all items will be displayed.
     @Test
-    fun whenApiSuccessPostsDisplay(){
+    fun whenApiSuccessPostsDisplay() {
         composeTestRule.setContent {
             val state by viewModel.stateValue.collectAsState()
             viewModel.onAction(HomeAction.GetPosts)
@@ -119,14 +124,18 @@ class HomeScreenTest {
 
         composeTestRule.onNodeWithTag("HomePostLazyColumn").assertIsDisplayed()
 
-        composeTestRule.onNodeWithTag(viewModel.stateValue.value.content[2].title?:"", useUnmergedTree = true)
-            .performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithTag(
+            viewModel.stateValue.value.content[2].title ?: "",
+            useUnmergedTree = true
+        ).performScrollTo().assertIsDisplayed()
         val count = composeTestRule.onAllNodesWithTag("PostBody", useUnmergedTree = true)
         count.assertCountEquals(viewModel.stateValue.value.content.size) // All items are tagged with 'PostBody'
     }
 
+    // When typing on TextField, filter operation executes and shorter list will be displayed
+    // Checks only items match with input text are exist.
     @Test
-    fun typeInSearchTextField(){
+    fun typeInSearchTextField() {
         val searchPhrase = "Title #2"
         composeTestRule.setContent {
             val state by viewModel.stateValue.collectAsState()
@@ -154,8 +163,9 @@ class HomeScreenTest {
         items.assertCountEquals(1) // We have only one item with 'Title #2'
     }
 
+    // If api failed, appropriate failure message will be displayed.
     @Test
-    fun whenApiFailedMessageDisplays(){
+    fun whenApiFailedMessageDisplays() {
         val fakeApiFailureMessage = "Api failed"
         composeTestRule.setContent {
             HomeScreen(

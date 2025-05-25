@@ -1,13 +1,22 @@
 package com.ashkan.samplecompose
 
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsFocused
+import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
+import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.ashkan.samplecompose.data.cache.DataStoreManager
+import com.ashkan.samplecompose.data.repository.login.LoginRepository
 import com.ashkan.samplecompose.ui.screen.login.EMAIL_TEXT_FIELD_CLEAR_TAG
 import com.ashkan.samplecompose.ui.screen.login.EMAIL_TEXT_FIELD_ICON_TAG
 import com.ashkan.samplecompose.ui.screen.login.EMAIL_TEXT_FIELD_TAG
@@ -18,25 +27,50 @@ import com.ashkan.samplecompose.ui.screen.login.LOGIN_HEADER_TITLE
 import com.ashkan.samplecompose.ui.screen.login.LOGIN_TERM_AND_CONDITION_TAG
 import com.ashkan.samplecompose.ui.screen.login.LoginScreen
 import com.ashkan.samplecompose.ui.screen.login.LoginState
+import com.ashkan.samplecompose.ui.screen.login.LoginViewModel
 import com.ashkan.samplecompose.ui.screen.login.PASS_TEXT_FIELD_CLEAR_TAG
 import com.ashkan.samplecompose.ui.screen.login.PASS_TEXT_FIELD_ICON_TAG
+import com.ashkan.samplecompose.ui.screen.login.PASS_TEXT_FIELD_TAG
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import javax.inject.Inject
 
+@HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class LoginScreenTest {
 
     @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private val defaultLoginState = LoginState(
+    @Inject lateinit var repository: LoginRepository
+    @Inject lateinit var dataStoreManager: DataStoreManager
+    private val savedStateHandle = SavedStateHandle()
+    private lateinit var viewModel: LoginViewModel
+
+    private val fakeLoginState = LoginState(
         emailAddress = "email@test.com",
         isEmailValid = true,
-        password = "123456",
+        password = "pass123456",
         isPasswordValid = true,
         isLoading = false
     )
+
+    @Before
+    fun setup() {
+        hiltRule.inject()
+        viewModel = LoginViewModel(
+            savedStateHandle,
+            dataStoreManager,
+            repository
+        )
+    }
 
     // Checks if header is displayed
     @Test
@@ -107,13 +141,36 @@ class LoginScreenTest {
     fun loginScreen_emailTextField_showClearIcon(){
         composeTestRule.setContent {
             LoginScreen(
-                uiState = defaultLoginState,
+                uiState = fakeLoginState,
                 onAction = {}
             )
         }
         composeTestRule
             .onNodeWithTag(EMAIL_TEXT_FIELD_CLEAR_TAG)
             .assertIsDisplayed()
+    }
+
+    // While typing/clearing
+    @Test
+    fun loginScreen_emailTextField_changeContent(){
+        composeTestRule.setContent {
+            val state by viewModel.stateValue.collectAsState()
+
+            LoginScreen(
+                uiState = state,
+                onAction = {
+                    viewModel.onAction(it)
+                }
+            )
+        }
+
+        composeTestRule.onNodeWithTag(EMAIL_TEXT_FIELD_TAG).performTextInput(fakeLoginState.emailAddress)
+        composeTestRule.onNodeWithTag(EMAIL_TEXT_FIELD_TAG).assertTextContains(fakeLoginState.emailAddress)
+        composeTestRule.onNodeWithTag(EMAIL_TEXT_FIELD_CLEAR_TAG).assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag(EMAIL_TEXT_FIELD_CLEAR_TAG).performClick()
+        composeTestRule.onNodeWithTag(EMAIL_TEXT_FIELD_TAG).assertTextContains("")
+        composeTestRule.onNodeWithTag(EMAIL_TEXT_FIELD_CLEAR_TAG).assertIsNotDisplayed()
     }
 
     // checks if password field icon is displayed
@@ -135,7 +192,7 @@ class LoginScreenTest {
     fun loginScreen_passwordTextField_showClearIcon(){
         composeTestRule.setContent {
             LoginScreen(
-                uiState = defaultLoginState,
+                uiState = fakeLoginState,
                 onAction = {}
             )
         }
@@ -144,12 +201,35 @@ class LoginScreenTest {
             .assertIsDisplayed()
     }
 
+    // While typing/clearing
+    @Test
+    fun loginScreen_passwordTextField_changeContent(){
+        composeTestRule.setContent {
+            val state by viewModel.stateValue.collectAsState()
+
+            LoginScreen(
+                uiState = state,
+                onAction = {
+                    viewModel.onAction(it)
+                }
+            )
+        }
+
+        composeTestRule.onNodeWithTag(PASS_TEXT_FIELD_TAG).performTextInput(fakeLoginState.password)
+        composeTestRule.onNodeWithTag(PASS_TEXT_FIELD_TAG).assertTextContains(fakeLoginState.password)
+        composeTestRule.onNodeWithTag(PASS_TEXT_FIELD_CLEAR_TAG).assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag(PASS_TEXT_FIELD_CLEAR_TAG).performClick()
+        composeTestRule.onNodeWithTag(PASS_TEXT_FIELD_TAG).assertTextContains("")
+        composeTestRule.onNodeWithTag(PASS_TEXT_FIELD_CLEAR_TAG).assertIsNotDisplayed()
+    }
+
     // Checks if button is displayed
     @Test
     fun loginScreen_showButton(){
         composeTestRule.setContent {
             LoginScreen(
-                uiState = defaultLoginState,
+                uiState = fakeLoginState,
                 onAction = {}
             )
         }
@@ -164,7 +244,7 @@ class LoginScreenTest {
     fun loginScreen_showLoading(){
         composeTestRule.setContent {
             LoginScreen(
-                uiState = defaultLoginState.copy(isLoading = true),
+                uiState = fakeLoginState.copy(isLoading = true),
                 onAction = {}
             )
         }
@@ -180,7 +260,7 @@ class LoginScreenTest {
         val fakeMessage = "Fake message from server"
         composeTestRule.setContent {
             LoginScreen(
-                uiState = defaultLoginState.copy(loginFailure = fakeMessage),
+                uiState = fakeLoginState.copy(loginFailure = fakeMessage),
                 onAction = {}
             )
         }
