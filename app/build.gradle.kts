@@ -18,7 +18,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        //testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.ashkan.samplecompose.CustomTestRunner"
     }
 
     buildTypes {
@@ -96,6 +97,7 @@ dependencies {
     debugImplementation(libs.compose.ui.testing)
     // Needed for createAndroidComposeRule, but not createComposeRule:
     debugImplementation(libs.compose.testing.manifest)
-    kaptAndroidTest(libs.dagger.hilt.compiler)
+    //kaptAndroidTest(libs.dagger.hilt.compiler)
+    kaptAndroidTest(libs.dagger.hilt.android.compiler)
     kaptTest(libs.dagger.hilt.compiler)
 }

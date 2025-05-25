@@ -21,7 +21,10 @@ class ToolbarViewTest {
         val fakeTitle = "fake title"
         composeTestRule.setContent {
             EdgeToEdgeToolbar(
-                fakeTitle
+                title = fakeTitle,
+                withBackButton = false,
+                backButtonIcon = {},
+                toolbarIcons = {}
             )
         }
 

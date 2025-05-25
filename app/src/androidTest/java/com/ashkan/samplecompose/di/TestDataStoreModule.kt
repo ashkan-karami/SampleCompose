@@ -1,8 +1,7 @@
-package com.ashkan.samplecompose
+package com.ashkan.samplecompose.di
 
 import android.content.Context
 import com.ashkan.samplecompose.data.cache.DataStoreManager
-import com.ashkan.samplecompose.di.DataStoreModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext
