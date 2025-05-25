@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
 
-    fun getArticles(): Flow<Result<List<PostModel>>>
+    fun getPosts(): Flow<Result<List<PostModel>>>
 }

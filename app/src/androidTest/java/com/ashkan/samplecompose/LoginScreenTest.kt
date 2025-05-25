@@ -7,14 +7,12 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.ashkan.samplecompose.ui.screen.login.EMAIL_TEXT_FIELD_CLEAR_TAG
 import com.ashkan.samplecompose.ui.screen.login.EMAIL_TEXT_FIELD_ICON_TAG
 import com.ashkan.samplecompose.ui.screen.login.EMAIL_TEXT_FIELD_TAG
 import com.ashkan.samplecompose.ui.screen.login.LOGIN_BUTTON_PROGRESS_TAG
 import com.ashkan.samplecompose.ui.screen.login.LOGIN_BUTTON_TAG
-import com.ashkan.samplecompose.ui.screen.login.LOGIN_BUTTON_TEXT_TAG
 import com.ashkan.samplecompose.ui.screen.login.LOGIN_DESCRIPTION_TAG
 import com.ashkan.samplecompose.ui.screen.login.LOGIN_HEADER_TITLE
 import com.ashkan.samplecompose.ui.screen.login.LOGIN_TERM_AND_CONDITION_TAG

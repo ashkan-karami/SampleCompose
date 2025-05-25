@@ -10,7 +10,7 @@ class HomeRepositoryImpl @Inject constructor(
     private val apiService: PostsApiService
 ): HomeRepository {
 
-    override fun getArticles(): Flow<Result<List<PostModel>>> =
+    override fun getPosts(): Flow<Result<List<PostModel>>> =
         apiWrapper {
             apiService.getPosts()
         }

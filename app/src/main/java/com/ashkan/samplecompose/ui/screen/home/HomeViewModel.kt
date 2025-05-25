@@ -33,7 +33,8 @@ class HomeViewModel @Inject constructor(
 
     private fun getPosts(){
         viewModelScope.launch {
-            repository.getArticles().collect {
+            _state.value = _state.value.copy(isLoading = true)
+            repository.getPosts().collect {
                 when(val data = it.toApiState()){
                     is ApiState.Success -> {
                         _state.value = _state.value.copy(
