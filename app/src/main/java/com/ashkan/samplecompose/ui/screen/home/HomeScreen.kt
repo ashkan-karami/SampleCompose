@@ -4,23 +4,17 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material3.Button
@@ -33,9 +27,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -45,13 +39,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ashkan.samplecompose.data.model.post.PostModel
 import com.ashkan.samplecompose.ui.components.ApiCallLoading
-import com.ashkan.samplecompose.ui.components.EdgeToEdgeToolbar
+import com.ashkan.samplecompose.ui.components.EdgeToEdgeHomeToolbar
 import com.ashkan.samplecompose.ui.theme.SairaFontFamily
 import com.ashkan.samplecompose.ui.theme.SampleComposeTheme
 import com.ashkan.samplecompose.util.defaultHorizontalSpace
 import com.ashkan.samplecompose.util.defaultVerticalSpace
 import com.ashkan.samplecompose.util.getNavigationBarHeight
-import java.util.ArrayList
 
 @Composable
 fun HomeRoute(
@@ -59,11 +52,22 @@ fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state: HomeState by viewModel.stateValue.collectAsStateWithLifecycle()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     HomeScreen(
         state = state,
         onReloadCLicked = {
             viewModel.onAction(HomeAction.GetPosts)
+        },
+        onSearchClicked = {
+            viewModel.onAction(HomeAction.UpdateSearchingMode(true))
+            keyboardController?.show()
+        },
+        onSearchPhraseChanged = {
+            viewModel.onAction(HomeAction.OnSearchPhraseChanged(it))
+        },
+        onSearchClosed = {
+            viewModel.onAction(HomeAction.UpdateSearchingMode(false))
         },
         modifier = modifier
     )
@@ -73,17 +77,28 @@ fun HomeRoute(
 internal fun HomeScreen(
     state: HomeState,
     onReloadCLicked: () -> Unit,
-    modifier: Modifier = Modifier
+    onSearchClicked: () -> Unit,
+    onSearchPhraseChanged: (String) -> Unit,
+    onSearchClosed: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
     ) {
-        EdgeToEdgeToolbar("For You")
+        EdgeToEdgeHomeToolbar(
+            "For You",
+            isSearching = state.isSearching,
+            searchPhrase = state.searchPhrase,
+            onSearchClicked = onSearchClicked,
+            onSearchPhraseChanged = onSearchPhraseChanged,
+            onSearchClosed = onSearchClosed
+        )
         Spacer(modifier = modifier.height(1.dp))
         when {
             state.isLoading -> {
                 Column(
+                    modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -117,7 +132,9 @@ private fun PostItems(
         initialFirstVisibleItemIndex = 0
     )
     LazyColumn(
-        modifier = modifier.fillMaxSize().testTag("HomePostLazyColumn"),
+        modifier = modifier
+            .fillMaxSize()
+            .testTag("HomePostLazyColumn"),
         contentPadding = PaddingValues(
             top = 12.dp,
             bottom = getNavigationBarHeight()
@@ -142,7 +159,7 @@ private fun PostItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clickable{
+            .clickable {
                 // TODO see details
             }
             .padding(bottom = 6.dp)
@@ -163,7 +180,7 @@ private fun PostItem(
             color = MaterialTheme.colorScheme.onPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.testTag(post.title?:"")
+            modifier = Modifier.testTag(post.title ?: "")
         )
 
         Text(
@@ -174,13 +191,14 @@ private fun PostItem(
             modifier = Modifier
                 .alpha(0.6F)
                 .padding(top = 4.dp)
-                .testTag(post.body?:""),
+                .testTag(post.body ?: ""),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
 
         Row(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
                 .padding(top = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
@@ -255,8 +273,11 @@ fun HomeScreenPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             HomeScreen(
-                state = HomeState(content = ArrayList(20)),
-                onReloadCLicked = {}
+                state = HomeState(isLoading = true),
+                onReloadCLicked = {},
+                onSearchClicked = {},
+                onSearchPhraseChanged = {},
+                onSearchClosed = {}
             )
         }
     }
@@ -276,7 +297,10 @@ private fun HomeScreenLoadingPreview() {
     SampleComposeTheme {
         HomeScreen(
             state = HomeState(isLoading = true),
-            onReloadCLicked = {}
+            onReloadCLicked = {},
+            onSearchClicked = {},
+            onSearchPhraseChanged = {},
+            onSearchClosed = {}
         )
     }
 }
@@ -298,8 +322,11 @@ fun HomeScreenFailurePreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             HomeScreen(
-                state = HomeState(postApiFailureMessage = "Api server failed!"),
-                onReloadCLicked = {}
+                state = HomeState(isLoading = true),
+                onReloadCLicked = {},
+                onSearchClicked = {},
+                onSearchPhraseChanged = {},
+                onSearchClosed = {}
             )
         }
     }

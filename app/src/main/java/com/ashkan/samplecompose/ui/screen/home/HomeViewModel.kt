@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ashkan.samplecompose.data.core.ApiState
 import com.ashkan.samplecompose.data.core.toApiState
+import com.ashkan.samplecompose.data.model.post.PostModel
 import com.ashkan.samplecompose.data.repository.home.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +17,7 @@ class HomeViewModel @Inject constructor(
     private val repository: HomeRepository
 ): ViewModel() {
 
+    private val allPostsList = mutableListOf<PostModel>()
     private val _state = MutableStateFlow(HomeState())
     val stateValue = _state.asStateFlow()
 
@@ -28,6 +30,12 @@ class HomeViewModel @Inject constructor(
             HomeAction.GetPosts -> {
                 getPosts()
             }
+            is HomeAction.UpdateSearchingMode -> {
+                updateSearchingMode(action.activate)
+            }
+            is HomeAction.OnSearchPhraseChanged -> {
+                searchPhrase(action.searchPhrase)
+            }
         }
     }
 
@@ -37,6 +45,7 @@ class HomeViewModel @Inject constructor(
             repository.getPosts().collect {
                 when(val data = it.toApiState()){
                     is ApiState.Success -> {
+                        allPostsList.addAll(data.data)
                         _state.value = _state.value.copy(
                             isLoading = false,
                             content = data.data,
@@ -52,6 +61,43 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private fun updateSearchingMode(activate: Boolean){
+        viewModelScope.launch {
+            if (activate){
+                if (_state.value.isLoading.not() &&
+                    _state.value.isSearching.not()) {
+                    _state.emit(
+                        _state.value.copy(
+                            isSearching = true
+                        )
+                    )
+                }
+            } else {
+                _state.emit(
+                    _state.value.copy(
+                        content = allPostsList,
+                        isSearching = false,
+                        searchPhrase = ""
+                    )
+                )
+            }
+        }
+    }
+
+    private fun searchPhrase(phrase: String){
+        viewModelScope.launch {
+            _state.emit(
+                _state.value.copy(
+                    content = allPostsList.filter {
+                        it.title?.lowercase()?.contains(phrase) == true ||
+                                it.body?.lowercase()?.contains(phrase) == true
+                    },
+                    searchPhrase = phrase
+                )
+            )
         }
     }
 }

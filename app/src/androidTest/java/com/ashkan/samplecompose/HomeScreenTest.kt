@@ -26,7 +26,10 @@ class HomeScreenTest {
         composeTestRule.setContent {
             HomeScreen(
                 state = HomeState(isLoading = true),
-                onReloadCLicked = {}
+                onReloadCLicked = {},
+                onSearchClicked = {},
+                onSearchPhraseChanged = {},
+                onSearchClosed = {}
             )
         }
 
@@ -40,7 +43,10 @@ class HomeScreenTest {
         composeTestRule.setContent {
             HomeScreen(
                 state = HomeState(content = items),
-                onReloadCLicked = {}
+                onReloadCLicked = {},
+                onSearchClicked = {},
+                onSearchPhraseChanged = {},
+                onSearchClosed = {}
             )
         }
 
@@ -56,7 +62,10 @@ class HomeScreenTest {
         composeTestRule.setContent {
             HomeScreen(
                 state = HomeState(postApiFailureMessage = fakeApiFailureMessage),
-                onReloadCLicked = {}
+                onReloadCLicked = {},
+                onSearchClicked = {},
+                onSearchPhraseChanged = {},
+                onSearchClosed = {}
             )
         }
 
