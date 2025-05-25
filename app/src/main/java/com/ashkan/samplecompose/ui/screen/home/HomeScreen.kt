@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ashkan.samplecompose.data.model.post.PostModel
+import com.ashkan.samplecompose.data.network.model.post.PostModel
 import com.ashkan.samplecompose.ui.components.ApiCallLoading
 import com.ashkan.samplecompose.ui.components.EdgeToEdgeHomeToolbar
 import com.ashkan.samplecompose.ui.theme.SairaFontFamily

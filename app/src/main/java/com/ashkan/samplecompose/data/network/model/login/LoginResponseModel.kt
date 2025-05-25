@@ -1,4 +1,4 @@
-package com.ashkan.samplecompose.data.model.login
+package com.ashkan.samplecompose.data.network.model.login
 
 import com.squareup.moshi.Json
 

@@ -1,6 +1,6 @@
-package com.ashkan.samplecompose.data.api
+package com.ashkan.samplecompose.data.network.api
 
-import com.ashkan.samplecompose.data.model.post.PostModel
+import com.ashkan.samplecompose.data.network.model.post.PostModel
 import retrofit2.http.GET
 
 interface PostsApiService {

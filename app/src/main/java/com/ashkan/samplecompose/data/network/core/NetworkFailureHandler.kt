@@ -1,4 +1,4 @@
-package com.ashkan.samplecompose.data.core
+package com.ashkan.samplecompose.data.network.core
 
 import kotlinx.coroutines.TimeoutCancellationException
 import retrofit2.HttpException

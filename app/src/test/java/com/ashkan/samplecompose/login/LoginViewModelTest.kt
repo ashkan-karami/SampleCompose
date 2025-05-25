@@ -3,9 +3,9 @@ package com.ashkan.samplecompose.login
 import androidx.lifecycle.SavedStateHandle
 import com.ashkan.samplecompose.MainDispatcherRule
 import com.ashkan.samplecompose.data.cache.DataStoreManager
-import com.ashkan.samplecompose.data.core.NetworkExceptions
-import com.ashkan.samplecompose.data.model.login.LoginResponseModel
-import com.ashkan.samplecompose.data.repository.login.LoginRepository
+import com.ashkan.samplecompose.data.network.core.NetworkExceptions
+import com.ashkan.samplecompose.data.network.model.login.LoginResponseModel
+import com.ashkan.samplecompose.data.network.repository.login.LoginRepository
 import com.ashkan.samplecompose.ui.screen.login.LoginAction
 import com.ashkan.samplecompose.ui.screen.login.LoginViewModel
 import junit.framework.TestCase.assertEquals

@@ -1,6 +1,6 @@
 package com.ashkan.samplecompose.ui.screen.home
 
-import com.ashkan.samplecompose.data.model.post.PostModel
+import com.ashkan.samplecompose.data.network.model.post.PostModel
 
 data class HomeState(
     val isLoading: Boolean = false,

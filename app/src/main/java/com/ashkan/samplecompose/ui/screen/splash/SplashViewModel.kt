@@ -3,13 +3,12 @@ package com.ashkan.samplecompose.ui.screen.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ashkan.samplecompose.data.cache.DataStoreManager
-import com.ashkan.samplecompose.data.core.ApiState
-import com.ashkan.samplecompose.data.core.toApiState
-import com.ashkan.samplecompose.data.repository.splash.SplashRepository
+import com.ashkan.samplecompose.data.network.core.ApiState
+import com.ashkan.samplecompose.data.network.core.toApiState
+import com.ashkan.samplecompose.data.network.repository.splash.SplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

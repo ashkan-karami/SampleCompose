@@ -1,4 +1,4 @@
-package com.ashkan.samplecompose.data.model.splash
+package com.ashkan.samplecompose.data.network.model.splash
 
 import com.squareup.moshi.Json
 

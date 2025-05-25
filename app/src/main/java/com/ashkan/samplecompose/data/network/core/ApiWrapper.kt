@@ -1,4 +1,4 @@
-package com.ashkan.samplecompose.data.core
+package com.ashkan.samplecompose.data.network.core
 
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.flowOn
 fun <Right> apiWrapper(request: suspend () -> Right): Flow<Result<Right>> {
 
     return flow {
-        kotlin.runCatching {
+        runCatching {
             emit(Result.success(request.invoke()))
         }.onFailure { throwable ->
             emit(

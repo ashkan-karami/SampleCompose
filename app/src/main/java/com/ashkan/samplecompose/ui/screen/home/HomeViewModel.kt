@@ -2,10 +2,10 @@ package com.ashkan.samplecompose.ui.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ashkan.samplecompose.data.core.ApiState
-import com.ashkan.samplecompose.data.core.toApiState
-import com.ashkan.samplecompose.data.model.post.PostModel
-import com.ashkan.samplecompose.data.repository.home.HomeRepository
+import com.ashkan.samplecompose.data.network.core.ApiState
+import com.ashkan.samplecompose.data.network.core.toApiState
+import com.ashkan.samplecompose.data.network.model.post.PostModel
+import com.ashkan.samplecompose.data.network.repository.home.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,7 +1,7 @@
 package com.ashkan.samplecompose.repository
 
-import com.ashkan.samplecompose.data.model.post.PostModel
-import com.ashkan.samplecompose.data.repository.home.HomeRepository
+import com.ashkan.samplecompose.data.network.model.post.PostModel
+import com.ashkan.samplecompose.data.network.repository.home.HomeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

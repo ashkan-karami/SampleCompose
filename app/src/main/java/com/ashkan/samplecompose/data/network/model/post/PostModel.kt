@@ -1,4 +1,4 @@
-package com.ashkan.samplecompose.data.model.post
+package com.ashkan.samplecompose.data.network.model.post
 
 import com.squareup.moshi.Json
 

@@ -16,7 +16,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.ashkan.samplecompose.data.cache.DataStoreManager
-import com.ashkan.samplecompose.data.repository.login.LoginRepository
+import com.ashkan.samplecompose.data.network.repository.login.LoginRepository
 import com.ashkan.samplecompose.ui.screen.login.EMAIL_TEXT_FIELD_CLEAR_TAG
 import com.ashkan.samplecompose.ui.screen.login.EMAIL_TEXT_FIELD_ICON_TAG
 import com.ashkan.samplecompose.ui.screen.login.EMAIL_TEXT_FIELD_TAG

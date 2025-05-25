@@ -78,6 +78,11 @@ dependencies {
     implementation(libs.datastore)
     implementation(libs.datastore.preferences)
 
+    // Room
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+
     // Test & Debug
     testImplementation(libs.junit)
     testImplementation(libs.dagger.hilt.testing)
@@ -87,6 +92,8 @@ dependencies {
     testImplementation(libs.mokito.inline)
     // Coroutine test rules
     testImplementation(libs.coroutine.testing)
+    // Room
+    testImplementation(libs.room.testing)
     androidTestImplementation(libs.dagger.hilt.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

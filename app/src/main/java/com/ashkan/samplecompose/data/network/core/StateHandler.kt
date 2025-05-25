@@ -1,4 +1,4 @@
-package com.ashkan.samplecompose.data.core
+package com.ashkan.samplecompose.data.network.core
 
 const val defaultErrorMessage = "Failed to connect to the server!"
 

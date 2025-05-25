@@ -1,8 +1,8 @@
-package com.ashkan.samplecompose.data.repository.splash
+package com.ashkan.samplecompose.data.network.repository.splash
 
-import com.ashkan.samplecompose.data.core.apiWrapper
-import com.ashkan.samplecompose.data.api.SplashApiService
-import com.ashkan.samplecompose.data.model.splash.AppConfigModel
+import com.ashkan.samplecompose.data.network.core.apiWrapper
+import com.ashkan.samplecompose.data.network.api.SplashApiService
+import com.ashkan.samplecompose.data.network.model.splash.AppConfigModel
 import kotlinx.coroutines.flow.Flow
 
 class SplashRepositoryImpl(

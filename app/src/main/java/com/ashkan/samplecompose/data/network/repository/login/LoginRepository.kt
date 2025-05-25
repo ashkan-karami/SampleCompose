@@ -1,6 +1,6 @@
-package com.ashkan.samplecompose.data.repository.login
+package com.ashkan.samplecompose.data.network.repository.login
 
-import com.ashkan.samplecompose.data.model.login.LoginResponseModel
+import com.ashkan.samplecompose.data.network.model.login.LoginResponseModel
 import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {

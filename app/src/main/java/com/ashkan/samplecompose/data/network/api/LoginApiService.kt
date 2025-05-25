@@ -1,6 +1,6 @@
-package com.ashkan.samplecompose.data.api
+package com.ashkan.samplecompose.data.network.api
 
-import com.ashkan.samplecompose.data.model.login.LoginResponseModel
+import com.ashkan.samplecompose.data.network.model.login.LoginResponseModel
 import retrofit2.http.GET
 import retrofit2.http.Query
 

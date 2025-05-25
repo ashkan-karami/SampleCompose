@@ -16,15 +16,13 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
-import com.ashkan.samplecompose.data.model.post.PostModel
-import com.ashkan.samplecompose.data.repository.home.HomeRepository
+import com.ashkan.samplecompose.data.network.repository.home.HomeRepository
 import com.ashkan.samplecompose.ui.screen.home.HomeAction
 import com.ashkan.samplecompose.ui.screen.home.HomeScreen
 import com.ashkan.samplecompose.ui.screen.home.HomeState
 import com.ashkan.samplecompose.ui.screen.home.HomeViewModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

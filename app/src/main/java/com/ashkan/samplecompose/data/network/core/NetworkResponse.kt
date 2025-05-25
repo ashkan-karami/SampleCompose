@@ -1,4 +1,4 @@
-package com.ashkan.samplecompose.data.core
+package com.ashkan.samplecompose.data.network.core
 
 data class NetworkResponse<out T> (
     val data: T,

@@ -17,7 +17,8 @@ retrofitCoroutineAdapter = "0.9.2"
 moshi = "1.14.0"
 kotlinReflect = "2.0.20"
 ksp = "2.0.21-1.0.27"
-datastore = "1.1.6"
+datastore = "1.1.7"
+room = "2.7.1"
 mockito = "5.10.0"
 mokitoKotlin = "5.2.1"
 mokitoInline = "5.2.0"
@@ -62,6 +63,10 @@ moshi-kotlin-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-code
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlinReflect"}
 datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -70,3 +75,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 dagger-hilt-plugin = { id = "dagger.hilt.android.plugin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
+room = { id = "androidx.room", version.ref = "room" }

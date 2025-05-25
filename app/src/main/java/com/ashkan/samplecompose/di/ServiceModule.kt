@@ -1,8 +1,8 @@
 package com.ashkan.samplecompose.di
 
-import com.ashkan.samplecompose.data.api.LoginApiService
-import com.ashkan.samplecompose.data.api.PostsApiService
-import com.ashkan.samplecompose.data.api.SplashApiService
+import com.ashkan.samplecompose.data.network.api.LoginApiService
+import com.ashkan.samplecompose.data.network.api.PostsApiService
+import com.ashkan.samplecompose.data.network.api.SplashApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

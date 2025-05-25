@@ -1,8 +1,8 @@
-package com.ashkan.samplecompose.data.repository.home
+package com.ashkan.samplecompose.data.network.repository.home
 
-import com.ashkan.samplecompose.data.api.PostsApiService
-import com.ashkan.samplecompose.data.core.apiWrapper
-import com.ashkan.samplecompose.data.model.post.PostModel
+import com.ashkan.samplecompose.data.network.api.PostsApiService
+import com.ashkan.samplecompose.data.network.core.apiWrapper
+import com.ashkan.samplecompose.data.network.model.post.PostModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

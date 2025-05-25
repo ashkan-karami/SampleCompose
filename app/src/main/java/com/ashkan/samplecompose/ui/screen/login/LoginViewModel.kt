@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ashkan.samplecompose.data.cache.DataStoreManager
-import com.ashkan.samplecompose.data.core.ApiState
-import com.ashkan.samplecompose.data.core.toApiState
-import com.ashkan.samplecompose.data.repository.login.LoginRepository
+import com.ashkan.samplecompose.data.network.core.ApiState
+import com.ashkan.samplecompose.data.network.core.toApiState
+import com.ashkan.samplecompose.data.network.repository.login.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

@@ -1,4 +1,4 @@
-package com.ashkan.samplecompose.data.core
+package com.ashkan.samplecompose.data.network.core
 
 abstract class NetworkExceptionsBase(
     override val message: String? = null,

@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ashkan.samplecompose.R
-import com.ashkan.samplecompose.data.core.defaultErrorMessage
 import com.ashkan.samplecompose.ui.theme.SampleComposeTheme
 import com.ashkan.samplecompose.util.getAppVersionName
 
