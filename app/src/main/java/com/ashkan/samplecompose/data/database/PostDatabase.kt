@@ -1,5 +1,6 @@
 package com.ashkan.samplecompose.data.database
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 
@@ -7,7 +8,11 @@ import androidx.room.RoomDatabase
     entities = [
         PostEntity::class
     ],
-    version = 1,
+    version = 2,
+//    autoMigrations = [
+//        AutoMigration(from = 1, to = 2, spec = DatabaseMigrations.Schema1to2::class)
+//    ],
+//    exportSchema = true
 )
 abstract class PostDatabase: RoomDatabase() {
 
