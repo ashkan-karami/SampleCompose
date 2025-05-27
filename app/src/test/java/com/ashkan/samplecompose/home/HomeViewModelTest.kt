@@ -5,6 +5,7 @@ import com.ashkan.samplecompose.data.network.core.NetworkExceptions
 import com.ashkan.samplecompose.data.network.model.post.PostModel
 import com.ashkan.samplecompose.data.network.repository.home.HomeRepository
 import com.ashkan.samplecompose.ui.screen.home.HomeViewModel
+import com.ashkan.samplecompose.util.ConnectivityManager
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,27 +27,37 @@ class HomeViewModelTest {
 
     private lateinit var viewModel: HomeViewModel
     private val mockedHomeRepository: HomeRepository = mock()
+    private val mockedConnectivityManager: ConnectivityManager = mock()
     private val fakePostList = List(10) { PostModel(it,it,"Title #$it", "Body #$it") }
     private val fakeErrorMessage = "Failed to connect to the server!"
     private val fakeException: NetworkExceptions = NetworkExceptions.IOException(fakeErrorMessage)
 
     @Before
     fun setUp(){
-        whenever(mockedHomeRepository.getPosts()).thenReturn(
-            flow { emit(Result.success(fakePostList)) }
-        )
-        viewModel = HomeViewModel(mockedHomeRepository)
+        runTest {
+            whenever(mockedHomeRepository.getRemotePosts()).thenReturn(
+                flow { emit(Result.success(fakePostList)) }
+            )
+            whenever(mockedHomeRepository.cachedPosts()).thenReturn(
+                fakePostList
+            )
+            whenever(mockedConnectivityManager.isConnected).thenReturn(true)
+            viewModel = HomeViewModel(mockedConnectivityManager, mockedHomeRepository)
+        }
     }
 
     @Test
     fun `on Api calls progressBar displays`() = runTest {
-        whenever(mockedHomeRepository.getPosts()).thenReturn(
+        whenever(mockedHomeRepository.getRemotePosts()).thenReturn(
             flow {
                 delay(3000)
                 emit(Result.success(fakePostList))
             }
         )
-        viewModel = HomeViewModel(mockedHomeRepository)
+        whenever(mockedHomeRepository.cachedPosts()).thenReturn(
+            emptyList()
+        )
+        viewModel = HomeViewModel(mockedConnectivityManager, mockedHomeRepository)
         assertTrue(viewModel.stateValue.first().isLoading)
     }
 
@@ -61,11 +72,14 @@ class HomeViewModelTest {
 
     @Test
     fun `on api call failure adds failure message`() = runTest {
-        whenever(mockedHomeRepository.getPosts()).thenReturn(
+        whenever(mockedHomeRepository.getRemotePosts()).thenReturn(
             flow {
                 emit(Result.failure(fakeException))
             })
-        viewModel = HomeViewModel(mockedHomeRepository)
+        whenever(mockedHomeRepository.cachedPosts()).thenReturn(
+            emptyList()
+        )
+        viewModel = HomeViewModel(mockedConnectivityManager, mockedHomeRepository)
         assertTrue(viewModel.stateValue.first().isLoading.not())
         assertEquals(fakeErrorMessage, viewModel.stateValue.first().postApiFailureMessage)
         assertTrue(viewModel.stateValue.first().content.isEmpty())

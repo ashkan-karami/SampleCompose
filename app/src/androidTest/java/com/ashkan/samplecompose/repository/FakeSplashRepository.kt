@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 
 class FakeSplashRepository : SplashRepository {
 
-    override fun getAppConfig(): Flow<Result<AppConfigModel>> =
+    override suspend fun getAppConfig(): Flow<Result<AppConfigModel>> =
         flow {
             emit(
                 Result.success(AppConfigModel(false, ""))

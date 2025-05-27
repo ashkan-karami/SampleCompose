@@ -9,7 +9,7 @@ class SplashRepositoryImpl(
     private val apiService: SplashApiService
 ) : SplashRepository {
 
-    override fun getAppConfig(): Flow<Result<AppConfigModel>> =
+    override suspend fun getAppConfig(): Flow<Result<AppConfigModel>> =
         apiWrapper {
             apiService.getAppConfig()
         }

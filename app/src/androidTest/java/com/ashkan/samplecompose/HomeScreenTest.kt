@@ -21,6 +21,7 @@ import com.ashkan.samplecompose.ui.screen.home.HomeAction
 import com.ashkan.samplecompose.ui.screen.home.HomeScreen
 import com.ashkan.samplecompose.ui.screen.home.HomeState
 import com.ashkan.samplecompose.ui.screen.home.HomeViewModel
+import com.ashkan.samplecompose.util.ConnectivityManager
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -39,15 +40,17 @@ class HomeScreenTest {
 
     @Inject
     lateinit var repository: HomeRepository
+    @Inject
+    lateinit var connectivityManager: ConnectivityManager
     private lateinit var viewModel: HomeViewModel
 
     @Before
     fun setup() {
         hiltRule.inject()
-        viewModel = HomeViewModel(repository)
+        viewModel = HomeViewModel(connectivityManager, repository)
     }
 
-    // Check if HomeToolbar and its content is displayed peoperly
+    // Check if HomeToolbar and its content is displayed properly
     @Test
     fun toolbarDisplaysProperly() {
         composeTestRule.setContent {
@@ -159,5 +162,29 @@ class HomeScreenTest {
         composeTestRule.onNodeWithText(fakeApiFailureMessage).assertIsDisplayed()
         // Reload Button is displayed
         composeTestRule.onNodeWithText("Reload").assertIsDisplayed()
+    }
+
+    @Test
+    fun whenAPiFailed_cachedItemsDisplay() {
+        val fakeApiFailureMessage = "Api failed"
+        composeTestRule.setContent {
+            val state by viewModel.stateValue.collectAsState()
+            HomeScreen(
+                state = state.copy(postApiFailureMessage = fakeApiFailureMessage),
+                onAction = {},
+            )
+        }
+
+        composeTestRule.onNodeWithTag("HomePostLazyColumn").assertIsDisplayed()
+        // Failure message won't be displayed
+        composeTestRule.onNodeWithText(fakeApiFailureMessage).assertIsNotDisplayed()
+        composeTestRule.onNodeWithText("Reload").assertIsNotDisplayed()
+
+        composeTestRule.onNodeWithTag(
+            viewModel.stateValue.value.content[2].title ?: "",
+            useUnmergedTree = true
+        ).performScrollTo().assertIsDisplayed()
+        val count = composeTestRule.onAllNodesWithTag("PostBody", useUnmergedTree = true)
+        count.assertCountEquals(viewModel.stateValue.value.content.size)
     }
 }

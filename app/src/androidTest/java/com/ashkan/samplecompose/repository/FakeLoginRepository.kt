@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 
 class FakeLoginRepository: LoginRepository {
 
-    override fun login(email: String, password: String): Flow<Result<LoginResponseModel>> =
+    override suspend fun login(email: String, password: String): Flow<Result<LoginResponseModel>> =
         flow {
             emit(
                 Result.success(LoginResponseModel("",""))

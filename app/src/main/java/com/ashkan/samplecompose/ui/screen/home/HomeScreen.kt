@@ -78,30 +78,27 @@ internal fun HomeScreen(
             onSearchClosed = { onAction(HomeAction.UpdateSearchingMode(false)) }
         )
         Spacer(modifier = modifier.height(1.dp))
-        when {
-            state.isLoading -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    ApiCallLoading()
-                }
+        if (state.content.isNotEmpty()){
+            PostItems(
+                posts = state.content,
+                modifier = modifier
+            )
+            if (state.postApiFailureMessage != null){
+                // TODO show toast
             }
-
-            state.content.isNotEmpty() -> {
-                PostItems(
-                    posts = state.content,
-                    modifier = modifier
-                )
+        } else if (state.isLoading){
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ApiCallLoading()
             }
-
-            state.postApiFailureMessage != null -> {
-                FailureBody(
-                    message = state.postApiFailureMessage,
-                    onAction = onAction
-                )
-            }
+        } else if (state.postApiFailureMessage != null){
+            FailureBody(
+                message = state.postApiFailureMessage,
+                onAction = onAction
+            )
         }
     }
 }

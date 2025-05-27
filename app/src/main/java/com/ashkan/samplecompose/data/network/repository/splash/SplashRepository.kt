@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface SplashRepository {
 
-    fun getAppConfig(): Flow<Result<AppConfigModel>>
+    suspend fun getAppConfig(): Flow<Result<AppConfigModel>>
 }

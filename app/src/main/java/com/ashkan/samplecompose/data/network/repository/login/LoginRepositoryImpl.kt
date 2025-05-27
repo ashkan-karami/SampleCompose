@@ -10,7 +10,7 @@ class LoginRepositoryImpl @Inject constructor(
     private val apiService: LoginApiService
 ): LoginRepository {
 
-    override fun login(email: String, password: String): Flow<Result<LoginResponseModel>> =
+    override suspend fun login(email: String, password: String): Flow<Result<LoginResponseModel>> =
         apiWrapper {
             val response = apiService.login(
                 email = email,

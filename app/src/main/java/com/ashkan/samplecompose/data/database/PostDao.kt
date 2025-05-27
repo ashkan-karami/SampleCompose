@@ -30,10 +30,10 @@ interface PostDao {
     )
     fun getPosts(postIds: Set<Int>): Flow<List<PostEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrIgnorePosts(posts: List<PostEntity>): List<Long>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(post: PostEntity)
 
     @Query(
@@ -51,4 +51,13 @@ interface PostDao {
         """,
     )
     suspend fun deletePost(postId: Int)
+
+    // To keep only 10 most recent items.
+    @Query("""
+        DELETE FROM posts
+        WHERE id NOT IN (
+            SELECT id FROM posts ORDER BY id DESC LIMIT 10
+        )
+    """)
+    suspend fun deleteOlderNotes()
 }

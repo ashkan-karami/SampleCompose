@@ -7,7 +7,10 @@ import kotlinx.coroutines.flow.flow
 
 class FakeHomeRepository : HomeRepository {
 
-    override fun getPosts(): Flow<Result<List<PostModel>>> =
+    override suspend fun cachedPosts(): List<PostModel> =
+        List(5) { PostModel(it,it,"Title #$it", "Body #$it") }
+
+    override suspend fun getRemotePosts(): Flow<Result<List<PostModel>>> =
         flow {
             emit(
                 Result.success(

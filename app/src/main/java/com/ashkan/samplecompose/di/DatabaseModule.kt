@@ -2,6 +2,7 @@ package com.ashkan.samplecompose.di
 
 import android.content.Context
 import androidx.room.Room
+import com.ashkan.samplecompose.data.database.PostDao
 import com.ashkan.samplecompose.data.database.PostDatabase
 import dagger.Module
 import dagger.Provides
@@ -24,4 +25,9 @@ internal object DatabaseModule {
         PostDatabase::class.java,
         "post-database",
     ).build()
+
+    @Provides
+    fun providesPostsDao(
+        database: PostDatabase,
+    ): PostDao = database.getPostDao()
 }
