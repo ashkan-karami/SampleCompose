@@ -42,6 +42,15 @@ android {
         compose = true
     }
 
+    lint {
+        abortOnError = true
+        warningsAsErrors = true
+        checkReleaseBuilds = true
+        xmlReport = true
+        htmlReport = true
+        lintConfig = file("lint.xml")
+    }
+
     sourceSets {
         // Adds exported schema location as test app assets.
         getByName("androidTest").assets.srcDir("$projectDir/schemas")
@@ -121,8 +130,6 @@ dependencies {
 //) : CommandLineArgumentProvider {
 //
 //    override fun asArguments(): Iterable<String> {
-//        // Note: If you're using KAPT and javac, change the line below to
-//        // return listOf("-Aroom.schemaLocation=${schemaDir.path}").
 //        return listOf("room.schemaLocation=${schemaDir.path}")
 //    }
 //}
