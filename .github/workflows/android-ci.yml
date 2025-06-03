@@ -55,8 +55,8 @@ jobs:
 #          name: dev-apk
 #          path: app/build/outputs/apk/dev/release/app-dev-release.apk
 
-      - name: Upload Prod APK
-        uses: actions/upload-artifact@v3.1.3
-        with:
-          name: prod-apk
-          path: app/build/outputs/apk/prod/release/app-prod-release.apk
+#      - name: Upload Prod APK
+#        uses: actions/upload-artifact@v3.1.3
+#        with:
+#          name: prod-apk
+#          path: app/build/outputs/apk/prod/release/app-prod-release.apk
