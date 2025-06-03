@@ -1,4 +1,5 @@
 # SampleCompose
+![Android CI](https://github.com/ashkan-karami/SampleCompose/actions/workflows/android-ci.yml/badge.svg)
 # MVI-Compose-Hilt-Coroutine-Test
 A small sample application applying strategy for:
 1. Implementing clean code using MVI, Hilt and Navigation.

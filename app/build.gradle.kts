@@ -22,6 +22,19 @@ android {
         testInstrumentationRunner = "com.ashkan.samplecompose.CustomTestRunner"
     }
 
+    flavorDimensions += "env"
+
+    productFlavors {
+        create("develop") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+        create("production") {
+            dimension = "env"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
