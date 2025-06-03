@@ -34,29 +34,29 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build Develop APK
-        run: ./gradlew assembleDevelopRelease
+      - name: Build Dev APK
+        run: ./gradlew assembleDevRelease
 
-      - name: Build Production APK
-        run: ./gradlew assembleProductionRelease
+      - name: Build Prod APK
+        run: ./gradlew assembleProdRelease
 
       - name: Run Unit Tests
-        run: ./gradlew testDevelopDebugUnitTest
+        run: ./gradlew testDevDebugUnitTest
 
       - name: Upload Unit Test Reports
         uses: actions/upload-artifact@v3
         with:
           name: unit-test-report
-          path: app/build/reports/tests/testDevelopDebugUnitTest/
+          path: app/build/reports/tests/testDevDebugUnitTest/
 
-      - name: Upload Develop APK
+      - name: Upload Dev APK
         uses: actions/upload-artifact@v3
         with:
-          name: develop-apk
-          path: app/build/outputs/apk/develop/release/app-dev-release.apk
+          name: dev-apk
+          path: app/build/outputs/apk/dev/release/app-dev-release.apk
 
-      - name: Upload Production APK
+      - name: Upload Prod APK
         uses: actions/upload-artifact@v3
         with:
-          name: production-apk
-          path: app/build/outputs/apk/production/release/app-prod-release.apk
+          name: prod-apk
+          path: app/build/outputs/apk/prod/release/app-prod-release.apk
