@@ -29,7 +29,10 @@ class LoginViewModelTest {
     private lateinit var viewModel: LoginViewModel
     private val savedStateHandle = SavedStateHandle()
     private val mockedLoginRepository: LoginRepository = mock()
-    private val successLoginResponseModel: LoginResponseModel = mock()
+    private val successLoginResponseModel = LoginResponseModel(
+        token = "Token",
+        refreshToken = "RefreshToken"
+    )
     private val mockedDataStoreManager: DataStoreManager = mock()
     private val fakeErrorMessage = "Failed to connect to the server!"
     private val fakeException: NetworkExceptions = NetworkExceptions.IOException(fakeErrorMessage)
