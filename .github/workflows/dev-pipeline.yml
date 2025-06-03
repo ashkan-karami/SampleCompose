@@ -1,17 +1,16 @@
-name: CI - Develop Branch
+name: CI - Develop
 
 on:
   push:
-    branches: [ "main" ] # Another Branch
+    branches: [ "main" ] # Branch Develop
 
 jobs:
-  build:
-
+  build-dev:
+    name: Build Dev APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -24,3 +23,6 @@ jobs:
 
       - name: Build Dev APK
         run: ./gradlew assembleDevRelease
+
+      - name: Run Unit Tests
+        run: ./gradlew testDevDebugUnitTest

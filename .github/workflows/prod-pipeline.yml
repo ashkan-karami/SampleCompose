@@ -1,4 +1,4 @@
-name: CI - Production Deploy
+name: CI - Production
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  build-prod:
+    name: Build Prod APK
     runs-on: ubuntu-latest
 
     steps:
@@ -37,9 +37,6 @@ jobs:
       - name: Build Prod APK
         run: ./gradlew assembleProdRelease
 
-      - name: Run Unit Tests
-        run: ./gradlew testDevDebugUnitTest
-
 #      - name: Upload Unit Test Reports
 #        uses: actions/upload-artifact@v3.1.3
 #        with:
@@ -57,3 +54,10 @@ jobs:
 #        with:
 #          name: prod-apk
 #          path: app/build/outputs/apk/prod/release/app-prod-release.apk
+
+  deploy:
+    name: Deploy to Store or Server
+    needs: build-prod
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying the production APK..."
