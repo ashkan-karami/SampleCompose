@@ -49,11 +49,11 @@ jobs:
           name: unit-test-report
           path: app/build/reports/tests/testDevDebugUnitTest/
 
-      - name: Upload Dev APK
-        uses: actions/upload-artifact@v3.1.3
-        with:
-          name: dev-apk
-          path: app/build/outputs/apk/dev/release/app-dev-release.apk
+#      - name: Upload Dev APK
+#        uses: actions/upload-artifact@v3.1.3
+#        with:
+#          name: dev-apk
+#          path: app/build/outputs/apk/dev/release/app-dev-release.apk
 
       - name: Upload Prod APK
         uses: actions/upload-artifact@v3.1.3
